@@ -1,0 +1,77 @@
+#include <iostream>
+#include "graphics.hpp"
+#include "physics.hpp"
+#include "system.hpp"
+
+void run(){
+
+    Camera camera {};
+
+    Window window { Vector2u(600,500), "Pong", camera };
+    window.create();
+    window.setFPSLimit(60);
+
+    Event event {};
+    InputManager input(window, event);
+
+    Rectangle paddle1 { Vector2f(10,100), Color::Red };
+    Rectangle paddle2 { paddle1 };
+
+    paddle1.setPosition(Vector2f(30, 250));
+    paddle2.setPosition(Vector2f(550, 250));
+
+    Circle ball { 10, Color::Red };
+    ball.setPosition(Vector2f(300,250));
+
+    GraphicManager graphics {};
+    graphics.add("paddle1", paddle1);
+    graphics.add("paddle2", paddle2);
+    graphics.add("ball", ball);
+
+    Vector2f speedPaddle { 15, 15 };
+    Vector2f speedBall { 2, 2 };
+
+    while(window.isOpen()){
+
+        Collision::makeWindowSolid(paddle1, window, speedPaddle);
+        Collision::makeWindowSolid(paddle2, window, speedPaddle);
+
+        ball.move(speedBall);
+
+        while(window.isEvent(event)){
+
+            if(input.key(InputManager::Key::Up))
+                paddle1.move(Vector2f(0, -speedPaddle.y));
+            if(input.key(InputManager::Key::Down))
+                paddle1.move(Vector2f(0, speedPaddle.y));
+            if(input.key(InputManager::Key::Z))
+                paddle2.move(Vector2f(0, -speedPaddle.y));
+            if(input.key(InputManager::Key::S))
+                paddle2.move(Vector2f(0, speedPaddle.y));
+        }
+
+        if(Collision::intersect(paddle1, ball))
+            speedBall = Vector2f(-speedBall.x, speedBall.y+=1);
+        if(Collision::intersect(paddle2, ball))
+            speedBall = Vector2f(-speedBall.x, speedBall.y+=1);
+        if(Collision::intersectWindowBottom(ball, window))
+            speedBall = Vector2f(speedBall.x, -speedBall.y);
+        if(Collision::intersectWindowTop(ball))
+            speedBall = Vector2f(speedBall.x, -speedBall.y);
+        if(Collision::intersectWindowLeft(ball) || Collision::intersectWindowRight(ball,window)){
+            ball.setPosition(Vector2f(300,250));
+            speedBall = Vector2f(2,2);
+        }
+
+        window.clear();
+        window.draw(graphics);
+        window.display();
+    }
+}
+
+int main(){
+
+    run();
+
+    return 0;
+}

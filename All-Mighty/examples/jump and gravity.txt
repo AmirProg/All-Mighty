@@ -1,0 +1,120 @@
+#include <iostream>
+#include "graphics.hpp"
+#include "system.hpp"
+#include "physics.hpp"
+#include "mapEditor.hpp"
+
+inline bool moving(Rectangle& A, const TileMap& map, TileMapProperties& tileMapProperties, const Vector2f& mv) {
+
+    Vector2f previousPos{ A.getPosition().x, A.getPosition().y };
+    Rectangle B{ A };
+    B.setPosition(Vector2f(A.getPosition().x + mv.x, A.getPosition().y + mv.y));
+
+    if (Collision::collisionTileState(B, map, tileMapProperties, "SOLID")) {
+        A.setPosition(Vector2f(previousPos.x, previousPos.y - 1)); // The movement was not valid, go to the previous position
+        return false;
+    }
+
+    return true;
+}
+
+int main() {
+
+    // MapEditor editor;
+    // editor.load();
+
+    /* Camera for the window */
+
+    Camera camera{};
+
+    /* Window and event */
+
+    Window window(Vector2u(800, 700), "Physic tests", camera);
+    window.create();
+
+    Event event;
+    InputManager input{ window, event };
+
+    /* Texts */
+
+    Text text{ "All Mighty Engine" };
+    text.setFont("ress/arial.ttf");
+    text.setColor(Color::Red);
+    text.setPosition(Vector2f(120, 250));
+
+    /* Game */
+
+    Rectangle rect{ Vector2f(40,40), Color::Red };
+    rect.setPosition(Vector2f(200, 10));
+
+    PhyEntity phyRect{ Vector2f(0,0), 500 };
+
+    ConcreteEntity concreteRect{ rect,phyRect };
+
+    Force gravity{ 0.01f, Vector2f(0,-1) };
+
+    gravity.addEntity(concreteRect);
+
+    TileMap map{ "level.txt" };
+    map.tileMapping();
+
+    TileMapProperties prop{};
+    prop.addState(0, "SOLID");
+
+    Vector2f mv{};
+
+    bool mSwitch{ false };
+
+    bool jump{ false };
+
+    while (window.isOpen()) {
+
+        Collision::makeWindowSolid(rect, window);
+
+        gravity.update();
+
+        while (window.isEvent(event)) {
+
+            if (event.close())
+                window.close();
+        }
+
+        if (rect.getPosition().y + rect.getBox().h > 650) {
+
+            rect.setPosition(Vector2f(rect.getPosition().x, rect.getPosition().y));
+            phyRect.setVelocity(Vector2f(0, 0));
+            gravity.reset();
+            jump = false;
+        }
+
+        if (input.key(InputManager::Key::Right))
+            phyRect.impulse(Vector2f(1, 0), 3);
+
+        else if (input.key(InputManager::Key::Left))
+            phyRect.impulse(Vector2f(-1, 0), 3);
+        else
+            phyRect.setVelocity(Vector2f(0, phyRect.getVelocity().y));
+
+        if (moving(rect, map, prop, mv))
+            rect.move(mv);
+
+        if (input.key(InputManager::Key::Up)) {
+
+            if (!jump)
+                phyRect.impulse(Vector2f(0, -1), 70);
+
+            jump = true;
+        }
+
+        rect.move(phyRect.getVelocity());
+
+        window.clear();
+
+        window.draw(map);
+        window.draw(rect);
+
+        window.display();
+    }
+
+    return 0;
+}
