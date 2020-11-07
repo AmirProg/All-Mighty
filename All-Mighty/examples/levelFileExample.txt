@@ -1,0 +1,11 @@
+Path_To_The_Texture
+
+NumberTiles_in_sheet_X NumberTiles_in_sheet_Y
+
+NumberTiles_in_Vector_X NumberTiles_in_Vector_Y
+
+0 0 0 0 0 . . .
+0 0 0 0 0 . . .
+. . . . . . . .
+. . . . . . . .
+. . . . . . . .
