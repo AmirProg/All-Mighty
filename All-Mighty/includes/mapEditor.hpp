@@ -75,7 +75,7 @@ public:
 
 	void loadPalete(const Vector2u& numberTiles, const std::string& path);
 
-	void handleClick(InputManager& input, SpriteSheet& currentSprite, int& currentKey);
+	void handleClick(InputManager& input, Sprite& currentSprite, int& currentKey);
 
 	SpriteSheet getPaleteSprite() const;
 
@@ -93,7 +93,7 @@ private:
 
 	SpriteSheet sheet_{ "ress2/tilesMap.png", Vector2u(1,1) };
 
-	std::unordered_map<int, SpriteSheet> sprites_; // A sprite is associated with a key (tile mapping) : for instance the first tile in the sheet has the key 0
+	std::unordered_map<int, Sprite> sprites_; // A sprite is associated with a key (tile mapping) : for instance the first tile in the sheet has the key 0
 	sf::RenderWindow paleteWindow_;
 
 	void mappingPalete(); // Set the tiles representing the palete
@@ -131,10 +131,10 @@ private:
 	MapEditorGUI gui_{ window_ };
 	MapEditorPalete palete_;
 
-	std::vector<SpriteSheet> sprites_;
+	std::vector<Sprite> sprites_;
 	Matrix<int> mapMatrix_;
 
-	SpriteSheet currentSprite_;
+	Sprite currentSprite_;
 	int currentKey_;
 
 	void loadData(bool& succeed);

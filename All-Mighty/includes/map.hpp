@@ -70,8 +70,8 @@ public:
     bool const saveMap(const std::string& path); // Saves the modifications in a file
     bool isTile(const Vector2f& position) const; // Tells if there is a tile on a position
     Vector2u const positionToIndex(const Vector2f& position) const; // Gives the index of the tile according to the position of the sprite
-    SpriteSheet getTile(const Vector2u& index) const; // Returns the sprite according to its index (CUT the sprite sheet but the texture has the same size /!\)
-    SpriteSheet getTileWithPosition(const Vector2f& position) const; // Returns the sprite according to the position
+    Sprite getTile(const Vector2u& index) const; // Returns the sprite according to its index (CUT the sprite sheet but the texture has the same size /!\)
+    Sprite getTileWithPosition(const Vector2f& position) const; // Returns the sprite according to the position
     Vector2u const getNumberTiles() const;
 
 private:
@@ -79,7 +79,7 @@ private:
     std::string texturePath_;
     Vector2u numberTiles_; // Dimensions of the tiles sheet (equal to spriteSheet_.getSheetDim())
     Matrix<int> mapMatrix_; // A Matrix object representing the map, we linearize the 2D container
-    std::vector<SpriteSheet> spriteTiles_; // Every sprites that constitute the map
+    std::vector<Sprite> spriteTiles_; // Every sprites that constitute the map
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
     virtual void update() override;
