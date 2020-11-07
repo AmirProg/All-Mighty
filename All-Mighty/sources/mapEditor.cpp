@@ -104,11 +104,11 @@ SpriteSheet MapEditorPalete::getPaleteSprite() const {
 	return sheet_;
 }
 
-void MapEditorPalete::handleClick(InputManager& input, SpriteSheet& currentSprite, int& currentKey) {
+void MapEditorPalete::handleClick(InputManager& input, Sprite& currentSprite, int& currentKey) {
 
 	if (input.clickLeft()) {
 
-		for (auto& i : sprites_) {
+		for (const auto& i : sprites_) {
 
 			if (Collision::intersectMouse(i.second, paleteWindow_)) {
 				currentSprite = i.second;
@@ -139,7 +139,7 @@ void MapEditorPalete::drawSheetPalete() {
 
 	paleteWindow_.clear();
 
-	for (auto& i : sprites_)
+	for (const auto& i : sprites_)
 		paleteWindow_.draw(i.second);
 
 	paleteWindow_.display();

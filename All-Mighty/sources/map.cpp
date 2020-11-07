@@ -170,12 +170,12 @@ Vector2u const TileMap::positionToIndex(const Vector2f& position) const{
                     static_cast<std::size_t>(std::size_t(position.x/spriteSheet_.getSizeOneSprite().x) + 1));
 }
 
-SpriteSheet TileMap::getTile(const Vector2u& index) const{
+Sprite TileMap::getTile(const Vector2u& index) const{
 
     return spriteTiles_[(index.x-1)*numberTiles_.x+index.y-1];
 }
 
-SpriteSheet TileMap::getTileWithPosition(const Vector2f& position) const{
+Sprite TileMap::getTileWithPosition(const Vector2f& position) const{
 
     return getTile(positionToIndex(position));
 }
