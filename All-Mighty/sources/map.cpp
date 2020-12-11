@@ -2,16 +2,16 @@
 
 /* TileMap */
 
-TileMap::TileMap()
+am::TileMap::TileMap()
 {}
 
-TileMap::TileMap(const SpriteSheet& spriteSheet) : spriteSheet_(spriteSheet)
+am::TileMap::TileMap(const SpriteSheet& spriteSheet) : spriteSheet_(spriteSheet)
 {}
 
-TileMap::TileMap(const SpriteSheet& spriteSheet, const std::initializer_list<std::initializer_list<int>>& mapMatrix) : spriteSheet_(spriteSheet){
+am::TileMap::TileMap(const SpriteSheet& spriteSheet, const std::initializer_list<std::initializer_list<int>>& mapMatrix) : spriteSheet_(spriteSheet){
 
     numberTiles_ = Vector2u(std::size(*std::begin(mapMatrix)), std::size(mapMatrix)); // *std::begin(mapMatrix) is the first case of the Matrix (-> Rows)
-    mapMatrix_.resize(numberTiles_.x,numberTiles_.y);
+    mapMatrix_.resize(numberTiles_.y,numberTiles_.x);
 
     /* Linearization of the 2D std::initializer_list<int>> */
 
@@ -30,21 +30,21 @@ TileMap::TileMap(const SpriteSheet& spriteSheet, const std::initializer_list<std
 
 }
 
-TileMap::TileMap(const std::string& path){
+am::TileMap::TileMap(const std::string& path){
 
     std::ifstream file{ path };
     assert(file); // The file has been charged
 
     int currentValue{};
 
-    Vector2u numberTilesSheet{};
-    Vector2u numberTiles{};
+    am::Vector2u numberTilesSheet{};
+    am::Vector2u numberTiles{};
 
     file >> texturePath_ >> numberTilesSheet.x >> numberTilesSheet.y >> numberTiles.x >> numberTiles.y; // The first line is the path to the texture, the two next are the number of tiles (width, height)
 
     spriteSheet_.setNewSheet(texturePath_, numberTilesSheet); // The SpriteSheet object is now correctly constructed (if it had'nt already done)
 
-    mapMatrix_.resize(numberTiles.x, numberTiles.y);
+    mapMatrix_.resize(numberTiles.y, numberTiles.x);
 
     numberTiles_ = numberTiles;
 
@@ -58,12 +58,12 @@ TileMap::TileMap(const std::string& path){
     }
 }
 
-TileMap::~TileMap(){
+am::TileMap::~TileMap(){
 
     spriteTiles_.clear();
 }
 
-void TileMap::tileMapping(){
+void am::TileMap::tileMapping(){
 
     spriteTiles_.clear();
 
@@ -82,7 +82,7 @@ void TileMap::tileMapping(){
     }
 }
 
-void TileMap::changeTileWithIndex(const Vector2u& index, int newValue){
+void am::TileMap::changeTileWithIndex(const Vector2u& index, int newValue){
 
     std::size_t scaleX = newValue%spriteSheet_.getSheetDim().x; // Prevent to go over the number of tiles on a single line
     std::size_t scaleY = static_cast<std::size_t>(newValue/spriteSheet_.getSheetDim().x);
@@ -95,7 +95,7 @@ void TileMap::changeTileWithIndex(const Vector2u& index, int newValue){
     mapMatrix_(index.x-1,index.y-1) = newValue; // The matrix representing the map is also modified
 }
 
-int TileMap::getTileNumber(const Vector2u& index) const{
+int am::TileMap::getTileNumber(const Vector2u& index) const{
 
     try {
 
@@ -115,12 +115,12 @@ int TileMap::getTileNumber(const Vector2u& index) const{
     }
 }
 
-void TileMap::changeTileWithPosition(const Vector2f& position, int newValue){
+void am::TileMap::changeTileWithPosition(const Vector2f& position, int newValue){
 
     changeTileWithIndex(positionToIndex(position),newValue);
 }
 
-bool const TileMap::saveMap(const std::string& path){
+bool const am::TileMap::saveMap(const std::string& path){
 
     std::ofstream file { path };
 
@@ -149,7 +149,7 @@ bool const TileMap::saveMap(const std::string& path){
     return succeed;
 }
 
-bool TileMap::isTile(const Vector2f& position) const{
+bool am::TileMap::isTile(const Vector2f& position) const{
 
     for(auto& i : spriteTiles_){
 
@@ -164,28 +164,28 @@ bool TileMap::isTile(const Vector2f& position) const{
     return false;
 }
 
-Vector2u const TileMap::positionToIndex(const Vector2f& position) const{
+am::Vector2u const am::TileMap::positionToIndex(const Vector2f& position) const{
 
     return Vector2u(static_cast<std::size_t>(std::size_t(position.y/spriteSheet_.getSizeOneSprite().y) + 1),
                     static_cast<std::size_t>(std::size_t(position.x/spriteSheet_.getSizeOneSprite().x) + 1));
 }
 
-Sprite TileMap::getTile(const Vector2u& index) const{
+am::Sprite am::TileMap::getTile(const Vector2u& index) const{
 
     return spriteTiles_[(index.x-1)*numberTiles_.x+index.y-1];
 }
 
-Sprite TileMap::getTileWithPosition(const Vector2f& position) const{
+am::Sprite am::TileMap::getTileWithPosition(const Vector2f& position) const{
 
     return getTile(positionToIndex(position));
 }
 
-Vector2u const TileMap::getNumberTiles() const{
+am::Vector2u const am::TileMap::getNumberTiles() const{
 
     return numberTiles_;
 }
 
-void TileMap::draw(sf::RenderTarget& target, sf::RenderStates states) const{
+void am::TileMap::draw(sf::RenderTarget& target, sf::RenderStates states) const{
 
     // We draw the full vector of sprites that constitute the tile map
 
@@ -193,7 +193,7 @@ void TileMap::draw(sf::RenderTarget& target, sf::RenderStates states) const{
         target.draw(k,states);
 }
 
-void TileMap::update(){
+void am::TileMap::update(){
 
     spriteTiles_.clear();
     tileMapping();

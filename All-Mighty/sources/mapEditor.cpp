@@ -1,8 +1,9 @@
 #include "mapEditor.hpp"
+#include <iostream>
 
 /* MapEditorGUI */
 
-MapEditorGUI::MapEditorGUI(Window& window) : GUI(GUI::Style::Center, window) {
+am::MapEditorGUI::MapEditorGUI(Window& window) : GUI(GUI::Style::Center, window) {
 
 	buildGui();
 
@@ -15,7 +16,7 @@ MapEditorGUI::MapEditorGUI(Window& window) : GUI(GUI::Style::Center, window) {
 	add("G", guiObjects_.loadButton);
 }
 
-void MapEditorGUI::buildGui() {
+void am::MapEditorGUI::buildGui() {
 
 	guiObjects_.name.setTextString("Level Name");
 	guiObjects_.name.setOutline(3, Color::Yellow);
@@ -40,7 +41,7 @@ void MapEditorGUI::buildGui() {
 
 }
 
-void MapEditorGUI::handleInputs(InputManager& input, Window& window) {
+void am::MapEditorGUI::handleInputs(InputManager& input, Window& window) {
 
 	guiObjects_.name.manageTextEntered(input, window);
 	guiObjects_.path.manageTextEntered(input, window);
@@ -50,7 +51,7 @@ void MapEditorGUI::handleInputs(InputManager& input, Window& window) {
 	guiObjects_.numberYTiles.manageTextEntered(input, window);
 }
 
-void MapEditorGUI::convertData(Vector2u& numberSheet, Vector2u& numberTiles, std::string& nameStr, std::string& pathStr, bool& succeed) {
+void am::MapEditorGUI::convertData(Vector2u& numberSheet, Vector2u& numberTiles, std::string& nameStr, std::string& pathStr, bool& succeed) {
 
 	/* std::stoul could throw an exception */
 
@@ -78,14 +79,14 @@ void MapEditorGUI::convertData(Vector2u& numberSheet, Vector2u& numberTiles, std
 	}
 }
 
-bool MapEditorGUI::buttonState(InputManager& input, Window& window) {
+bool am::MapEditorGUI::buttonState(InputManager& input, Window& window) {
 
 	return guiObjects_.loadButton.isClicked(input, window);
 }
 
 /* MapEditorPalete */
 
-void MapEditorPalete::loadPalete(const Vector2u& numberTilesSheet, const std::string& path) {
+void am::MapEditorPalete::loadPalete(const Vector2u& numberTilesSheet, const std::string& path) {
 
 	sheet_.setNewSheet(path, numberTilesSheet);
 
@@ -99,12 +100,12 @@ void MapEditorPalete::loadPalete(const Vector2u& numberTilesSheet, const std::st
 	mappingPalete();
 }
 
-SpriteSheet MapEditorPalete::getPaleteSprite() const {
+am::SpriteSheet am::MapEditorPalete::getPaleteSprite() const {
 
 	return sheet_;
 }
 
-void MapEditorPalete::handleClick(InputManager& input, Sprite& currentSprite, int& currentKey) {
+void am::MapEditorPalete::handleClick(InputManager& input, Sprite& currentSprite, int& currentKey) {
 
 	if (input.clickLeft()) {
 
@@ -118,7 +119,7 @@ void MapEditorPalete::handleClick(InputManager& input, Sprite& currentSprite, in
 	}
 }
 
-void MapEditorPalete::mappingPalete() {
+void am::MapEditorPalete::mappingPalete() {
 
 	int key{};
 
@@ -135,7 +136,7 @@ void MapEditorPalete::mappingPalete() {
 	}
 }
 
-void MapEditorPalete::drawSheetPalete() {
+void am::MapEditorPalete::drawSheetPalete() {
 
 	paleteWindow_.clear();
 
@@ -145,40 +146,40 @@ void MapEditorPalete::drawSheetPalete() {
 	paleteWindow_.display();
 }
 
-inline bool MapEditorPalete::isOpen() const {
+inline bool am::MapEditorPalete::isOpen() const {
 
 	return paleteWindow_.isOpen();
 }
 
-inline bool MapEditorPalete::isClosed(Event& event) {
+inline bool am::MapEditorPalete::isClosed(Event& event) {
 
 	return event.type == sf::Event::Closed;
 }
 
-inline bool MapEditorPalete::isEvent(Event& event) {
+inline bool am::MapEditorPalete::isEvent(Event& event) {
 
 	return paleteWindow_.pollEvent(event);
 }
 
-void MapEditorPalete::close() {
+void am::MapEditorPalete::close() {
 
 	paleteWindow_.close();
 }
 
 /* MapEditor */
 
-MapEditor::MapEditor() {
+am::MapEditor::MapEditor() {
 
 	window_.create();
 	gui_.setWindow(window_);
 }
 
-void MapEditor::loadData(bool& succeed) {
+void am::MapEditor::loadData(bool& succeed) {
 
 	gui_.convertData(data_.numberSheet, data_.numberTiles, data_.name, data_.path, succeed); // Gathers the data entered in the GUI by the user
 	gui_.clear();
 
-	mapMatrix_.resize(data_.numberTiles.x, data_.numberTiles.y);
+	mapMatrix_.resize(data_.numberTiles.y, data_.numberTiles.x);
 
 	palete_.loadPalete(data_.numberSheet, data_.path); // We can know load the palete with the appropriate sheet
 
@@ -192,7 +193,7 @@ void MapEditor::loadData(bool& succeed) {
 	mapping();
 }
 
-void MapEditor::handleInputs(InputManager& input, bool& succeed) {
+void am::MapEditor::handleInputs(InputManager& input, bool& succeed) {
 
 	gui_.handleInputs(input, window_);
 	palete_.handleClick(input, currentSprite_, currentKey_);
@@ -223,7 +224,7 @@ void MapEditor::handleInputs(InputManager& input, bool& succeed) {
 	}
 }
 
-void MapEditor::load() {
+void am::MapEditor::load() {
 
 	Event event{};
 	InputManager input{ window_, event };
@@ -269,7 +270,7 @@ void MapEditor::load() {
 	}
 }
 
-void MapEditor::mapping() {
+void am::MapEditor::mapping() {
 
 	SpriteSheet sheet{ palete_.getPaleteSprite() };
 
@@ -288,7 +289,7 @@ void MapEditor::mapping() {
 	}
 }
 
-void MapEditor::changeTile(const Vector2u& index) {
+void am::MapEditor::changeTile(const Vector2u& index) {
 
 	/* We use the same algorithm used in the TileMap class */
 
@@ -303,16 +304,15 @@ void MapEditor::changeTile(const Vector2u& index) {
 
 	sprites_[(index.x - 1) * data_.numberTiles.x + index.y - 1] = sheet;
 	mapMatrix_(index.x - 1, index.y - 1) = currentKey_; // The matrix representing the map is modified too
-
 }
 
-inline Vector2u MapEditor::positionToIndex(const Vector2f& position, const MapEditorPalete& palete) {
+inline am::Vector2u am::MapEditor::positionToIndex(const Vector2f& position, const MapEditorPalete& palete) {
 
 	return Vector2u(static_cast<std::size_t>(std::size_t(position.y / palete.getPaleteSprite().getSizeOneSprite().y) + 1),
 					static_cast<std::size_t>(std::size_t(position.x / palete.getPaleteSprite().getSizeOneSprite().x) + 1));
 }
 
-bool const MapEditor::save(const std::string& fileName, const std::string& pathTexture, const Vector2u& numberTilesSheet, const Vector2u& numberTiles, const  Matrix<int>& mapMatrix) {
+bool const am::MapEditor::save(const std::string& fileName, const std::string& pathTexture, const Vector2u& numberTilesSheet, const Vector2u& numberTiles, const  Matrix<int>& mapMatrix) {
 
 	std::string path{ fileName + ".txt" };
 
@@ -343,7 +343,7 @@ bool const MapEditor::save(const std::string& fileName, const std::string& pathT
 	return succeed;
 }
 
-void MapEditor::drawMap(Window& window) {
+void am::MapEditor::drawMap(Window& window) {
 
 	for (auto& i : sprites_)
 		window.draw(i);
