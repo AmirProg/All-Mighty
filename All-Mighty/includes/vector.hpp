@@ -20,79 +20,82 @@
 *
 **************************************************************************************************************/
 
-template<typename U>
-class Vector4{
+namespace am {
 
-public:
-    Vector4();
-    Vector4(const U& a, const U& b, const U& c, const U& d);
-    Vector4(const Vector4&);
-    Vector4(Vector4&&) noexcept = default;
-    virtual ~Vector4() = default;
-    virtual float norm() const;
-    virtual float distance(const Vector4& b) const;
+    template<typename U>
+    class Vector4 {
 
-    // Overloadings
-    Vector4& operator=(const Vector4&) noexcept;
-    virtual Vector4 operator+=(const Vector4& a) noexcept;
-    virtual Vector4 operator-=(const Vector4& a) noexcept;
-    virtual bool operator==(const Vector4& a) const noexcept;
-    virtual bool operator!=(const Vector4& a) const noexcept;
+    public:
+        Vector4();
+        Vector4(const U& a, const U& b, const U& c, const U& d);
+        Vector4(const Vector4&);
+        Vector4(Vector4&&) noexcept = default;
+        virtual ~Vector4() = default;
+        virtual float norm() const;
+        virtual float distance(const Vector4& b) const;
 
-    U x, y, w, h; // Public attributes
-};
+        // Overloadings
+        Vector4& operator=(const Vector4&) noexcept;
+        virtual Vector4 operator+=(const Vector4& a) noexcept;
+        virtual Vector4 operator-=(const Vector4& a) noexcept;
+        virtual bool operator==(const Vector4& a) const noexcept;
+        virtual bool operator!=(const Vector4& a) const noexcept;
 
-template<typename U>
-Vector4<U> operator+(Vector4<U> a, const Vector4<U>& b) noexcept;
-template<typename U>
-Vector4<U> operator-(Vector4<U> a, const Vector4<U>& b) noexcept;
+        U x, y, w, h; // Public attributes
+    };
 
-template<typename U>
-std::ostream& operator<<(std::ostream& os, const Vector4<U>& a) noexcept{ // Stream overloading -> std::cout << v;
-    os << "(" << a.x << "," << a.y << "," << a.w << "," << a.h << ")";
-    return os;
+    template<typename U>
+    std::ostream& operator<<(std::ostream& os, const Vector4<U>& a) noexcept { // Stream overloading -> std::cout << v;
+        os << "(" << a.x << "," << a.y << "," << a.w << "," << a.h << ")";
+        return os;
+    }
+
+
+    /* Vector2<> template class which inherit from Vector4<> w = h = 0 */
+
+    template<typename T>
+    class Vector2 : public am::Vector4<T> {
+
+    public:
+        Vector2();
+        Vector2(const Vector2&);
+        Vector2(const T& a, const T& b);
+        Vector2(Vector2&&) noexcept = default;
+        virtual ~Vector2() = default;
+        Vector2& operator=(const Vector2&) noexcept;
+
+        // Overloadings
+        Vector2 operator+=(const Vector2& a) noexcept;
+        Vector2 operator-=(const Vector2& a) noexcept;
+        bool operator==(const Vector2& a) const noexcept;
+        bool operator!=(const Vector2& a) const noexcept;
+    };
+
+    template<typename T>
+    std::ostream& operator<<(std::ostream& os, const Vector2<T>& a) noexcept { // Stream overloading -> std::cout << v;
+        os << "(" << a.x << "," << a.y << ")";
+        return os;
+    }
+
+    /* typedefs (shorter alias) */
+
+    typedef Vector4<int> Vector4i;
+    typedef Vector4<unsigned int> Vector4u;
+    typedef Vector4<float> Vector4f;
+    typedef Vector2<int> Vector2i;
+    typedef Vector2<unsigned int> Vector2u;
+    typedef Vector2<float> Vector2f;
 }
 
-
-/* Vector2<> template class which inherit from Vector4<> w = h = 0 */
-
 template<typename T>
-class Vector2 : public Vector4<T>{
-
-public:
-    Vector2();
-    Vector2(const Vector2&);
-    Vector2(const T& a, const T& b);
-    Vector2(Vector2&&) noexcept = default;
-    virtual ~Vector2() = default;
-    Vector2& operator=(const Vector2&) noexcept;
-
-    // Overloadings
-    Vector2 operator+=(const Vector2& a) noexcept;
-    Vector2 operator-=(const Vector2& a) noexcept;
-    bool operator==(const Vector2& a) const noexcept;
-    bool operator!=(const Vector2& a) const noexcept;
-};
-
+am::Vector2<T> operator+(am::Vector2<T> a, const am::Vector2<T>& b) noexcept;
 template<typename T>
-Vector2<T> operator+(Vector2<T> a, const Vector2<T>& b) noexcept;
-template<typename T>
-Vector2<T> operator-(Vector2<T> a, const Vector2<T>& b) noexcept;
+am::Vector2<T> operator-(am::Vector2<T> a, const am::Vector2<T>& b) noexcept;
 
-template<typename T>
-std::ostream& operator<<(std::ostream& os, const Vector2<T>& a) noexcept{ // Stream overloading -> std::cout << v;
-    os << "(" << a.x << "," << a.y << ")";
-    return os;
-}
-
-/* typedefs (shorter alias) */
-
-typedef Vector4<int> Vector4i;
-typedef Vector4<unsigned int> Vector4u;
-typedef Vector4<float> Vector4f;
-typedef Vector2<int> Vector2i;
-typedef Vector2<unsigned int> Vector2u;
-typedef Vector2<float> Vector2f;
+template<typename U>
+am::Vector4<U> operator+(am::Vector4<U> a, const am::Vector4<U>& b) noexcept;
+template<typename U>
+am::Vector4<U> operator-(am::Vector4<U> a, const am::Vector4<U>& b) noexcept;
 
 #include "vector.tpp"
 

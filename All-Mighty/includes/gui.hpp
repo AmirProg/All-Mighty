@@ -31,33 +31,36 @@
 *
 *************************************************************************/
 
-class GUI : public ResourcesManager<std::string, Widget>, public sf::Drawable {
+namespace am {
 
-public:
-    enum class Style { Default, Center, Right, Left, Row, Line, Max }; // Default = no style, you have to move every widgets yourself
+    class GUI : public ResourcesManager<std::string, Widget>, public sf::Drawable {
 
-    GUI() = default;
-    GUI(Style style, Window& window);
-    GUI(GUI&&) noexcept = default;
-    GUI& operator=(GUI&&) noexcept = default;
-    virtual ~GUI();
-    void add(const std::string& key, Widget& resource); // Stack system
-    virtual void remove(const std::string& key);
-    void setWindow(Window& window); // If you want to change the current window your GUI is associated with
-    void setStyle(Style style);
-    void move(const Vector2f& moveVector); // Move every widgets in the GUI
-    void getMovable(InputManager& input); // Get every widgets of the GUI movable according to the inputs
+    public:
+        enum class Style { Default, Center, Right, Left, Row, Line, Max }; // Default = no style, you have to move every widgets yourself
 
-private:
-    std::reference_wrapper<Window> window_;
-    Style style_;
-    void update(); // Update the responsive GUI according to the chosen style
-    static void setCenterStyle(std::map<std::string, std::reference_wrapper<Widget>>& resources, std::reference_wrapper<Window> window);
-    void alignAxisX(float x); // Used for Right, Left and Row styles
-    void moveWithMouse(InputManager& input);
-    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+        GUI() = default;
+        GUI(Style style, Window& window);
+        GUI(GUI&&) noexcept = default;
+        GUI& operator=(GUI&&) noexcept = default;
+        virtual ~GUI();
+        void add(const std::string& key, Widget& resource); // Stack system
+        virtual void remove(const std::string& key);
+        void setWindow(Window& window); // If you want to change the current window your GUI is associated with
+        void setStyle(Style style);
+        void move(const Vector2f& moveVector); // Move every widgets in the GUI
+        void getMovable(InputManager& input); // Get every widgets of the GUI movable according to the inputs
 
-    bool movable_{ false }; // Says if the widgets stacked in the GUI are movable
-};
+    private:
+        std::reference_wrapper<Window> window_;
+        Style style_;
+        void update(); // Update the responsive GUI according to the chosen style
+        static void setCenterStyle(std::map<std::string, std::reference_wrapper<Widget>>& resources, std::reference_wrapper<Window> window);
+        void alignAxisX(float x); // Used for Right, Left and Row styles
+        void moveWithMouse(InputManager& input);
+        virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+
+        bool movable_{ false }; // Says if the widgets stacked in the GUI are movable
+    };
+}
 
 #endif // GUI_HPP_INCLUDED

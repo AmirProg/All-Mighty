@@ -1,34 +1,34 @@
 #include "animation.hpp"
 
-Animation::Animation(SpriteSheet& spriteSheet) : spriteSheet_(spriteSheet),
-                                                 frame_(0),
-                                                 currentSprite_(Vector2u(1,1)),
-                                                 stopWatch_(StopWatch::Accuracy::Milliseconds),
-                                                 status_(Status::Disable)
+am::Animation::Animation(am::SpriteSheet& spriteSheet) : spriteSheet_(spriteSheet),
+                                                         frame_(0),
+                                                         currentSprite_(Vector2u(1,1)),
+                                                         stopWatch_(StopWatch::Accuracy::Milliseconds),
+                                                         status_(Status::Disable)
 {}
 
-void Animation::setSpriteSheet(SpriteSheet& spriteSheet){
+void am::Animation::setSpriteSheet(am::SpriteSheet& spriteSheet){
 
     spriteSheet_ = spriteSheet;
 }
 
-void Animation::setFrame(std::size_t frame){
+void am::Animation::setFrame(std::size_t frame){
     frame_ = frame;
 }
 
-void Animation::restart(){
+void am::Animation::restart(){
 
     stopWatch_.restart();
     currentSprite_ = Vector2u(1,1);
 }
 
-void Animation::setBase(const Vector2u& base){
+void am::Animation::setBase(const am::Vector2u& base){
 
     spriteSheet_.get().cut(Vector2u(base.x,base.y));
     stopWatch_.restart();
 }
 
-void Animation::playAnimationLine(std::size_t lineSheet){
+void am::Animation::playAnimationLine(std::size_t lineSheet){
 
     status_ = Status::Active;
 
@@ -49,7 +49,7 @@ void Animation::playAnimationLine(std::size_t lineSheet){
     }
 }
 
-void Animation::playAnimation(){
+void am::Animation::playAnimation(){
 
     status_ = Status::Active;
     playAnimationLine(currentSprite_.y);
@@ -58,7 +58,7 @@ void Animation::playAnimation(){
         restart();
 }
 
-void Animation::pauseAnimation(){
+void am::Animation::pauseAnimation(){
 
     status_ = Status::Disable;
 }

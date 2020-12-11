@@ -10,18 +10,21 @@
 *
 ****************************************/
 
-class VisualEntity{
+namespace am {
 
-protected:
-    VisualEntity() = default;
-    VisualEntity(const VisualEntity&) = default;
-    virtual ~VisualEntity() = default;
-    VisualEntity& operator=(const VisualEntity&) = default;
-    VisualEntity(VisualEntity&&) = delete;
-    VisualEntity& operator=(VisualEntity&&) = delete;
+    class VisualEntity {
 
-private:
-    virtual void update() = 0;
-};
+    protected:
+        VisualEntity() = default;
+        VisualEntity(const VisualEntity&) = default;
+        virtual ~VisualEntity() = default;
+        VisualEntity& operator=(const VisualEntity&) = default;
+        VisualEntity(VisualEntity&&) = delete;
+        VisualEntity& operator=(VisualEntity&&) = delete;
+
+    private:
+        virtual void update() = 0;
+    };
+}
 
 #endif // VISUALENTITY_HPP_INCLUDED

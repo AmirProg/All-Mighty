@@ -1,11 +1,11 @@
 #include "camera.hpp"
 
-Camera::~Camera() noexcept{
+am::Camera::~Camera() noexcept{
 
     views_.clear();
 }
 
-void Camera::setCenter(const Vector2f& center){
+void am::Camera::setCenter(const am::Vector2f& center){
 
     commonCenterPosition_ = center;
 
@@ -13,7 +13,7 @@ void Camera::setCenter(const Vector2f& center){
         i.second.setCenter(commonCenterPosition_.x, commonCenterPosition_.y);
 }
 
-void Camera::setCenter(const sf::Transformable& object){
+void am::Camera::setCenter(const sf::Transformable& object){
 
     commonCenterPosition_ = Vector2f(object.getPosition().x, object.getPosition().y);
 
@@ -21,7 +21,7 @@ void Camera::setCenter(const sf::Transformable& object){
         i.second.setCenter(commonCenterPosition_.x, commonCenterPosition_.y);
 }
 
-void Camera::setCenter(int key, const Vector2f& center){
+void am::Camera::setCenter(int key, const am::Vector2f& center){
 
     auto it { views_.find(key) }; // Iterator on the element
     assert((it != views_.end()) && "Fail no view found");
@@ -29,18 +29,18 @@ void Camera::setCenter(int key, const Vector2f& center){
     it->second.setCenter(center.x, center.y);
 }
 
-void Camera::setCenter(int key, const sf::Transformable& object){
+void am::Camera::setCenter(int key, const sf::Transformable& object){
 
     setCenter(key, Vector2f(object.getPosition().x, object.getPosition().y));
 }
 
-void Camera::move(const Vector2f& moveVector){
+void am::Camera::move(const am::Vector2f& moveVector){
 
     for(auto& i : views_)
         move(i.first, moveVector);
 }
 
-void Camera::move(int key, const Vector2f& moveVector){
+void am::Camera::move(int key, const am::Vector2f& moveVector){
 
     auto it { views_.find(key) }; // Iterator on the element
     assert((it != views_.end()) && "Fail view no found");
@@ -48,34 +48,34 @@ void Camera::move(int key, const Vector2f& moveVector){
     it->second.move(moveVector.x, moveVector.y);
 }
 
-void Camera::zoom(float factor){
+void am::Camera::zoom(float factor){
 
     for(auto& i : views_)
         zoom(i.first, factor);
 }
 
 
-void Camera::zoom(int key, float factor){
+void am::Camera::zoom(int key, float factor){
 
     this->operator[](key).zoom(factor);
 }
 
-void Camera::addView(int key, const Vector2f& center, const Vector2f& rectDim){
+void am::Camera::addView(int key, const am::Vector2f& center, const am::Vector2f& rectDim){
 
     views_.insert({ key, sf::View(sf::Vector2f(center.x,center.y), sf::Vector2f(rectDim.x, rectDim.y)) });
 }
 
-void Camera::addView(int key, const sf::View& view){
+void am::Camera::addView(int key, const sf::View& view){
 
     views_.insert( {key, view} );
 }
 
-void Camera::setViewPosition(int key, const Vector4f& position){
+void am::Camera::setViewPosition(int key, const am::Vector4f& position){
 
     this->operator[](key).setViewport(sf::FloatRect(position.x, position.y, position.w, position.h));
 }
 
-void Camera::setViewType(int key, Type type){
+void am::Camera::setViewType(int key, Type type){
 
     if(type == Type::None)
         setViewPosition(key, Vector4f(0, 0, 0, 0));
@@ -89,12 +89,12 @@ void Camera::setViewType(int key, Type type){
         setViewPosition(key, Vector4f(0.5, 0, 0.75, 0.75));
 }
 
-std::size_t Camera::getNumberView() const{
+std::size_t am::Camera::getNumberView() const{
 
     return std::size(views_);
 }
 
-sf::View& Camera::operator[](int key){
+sf::View& am::Camera::operator[](int key){
 
     auto it { views_.find(key) }; // Iterator on the element
     assert((it != views_.end()) && "Fail view no found"); // If the iterator has reached the end then there is no element associated to that key

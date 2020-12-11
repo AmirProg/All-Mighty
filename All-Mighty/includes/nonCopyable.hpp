@@ -12,16 +12,19 @@
 *                                                   *
 ****************************************************/
 
-class NonCopyable{
+namespace am {
 
-protected:
-    NonCopyable() = default; // You have to define a default constructor in your classes that inherit from NonCopyable
-    virtual ~NonCopyable()
-    {}
+    class NonCopyable {
 
-private:
-    NonCopyable(const NonCopyable&) = delete;
-    NonCopyable& operator=(const NonCopyable&) = delete;
-};
+    protected:
+        NonCopyable() = default; // You have to define a default constructor in your classes that inherit from NonCopyable
+        virtual ~NonCopyable()
+        {}
+
+    private:
+        NonCopyable(const NonCopyable&) = delete;
+        NonCopyable& operator=(const NonCopyable&) = delete;
+    };
+}
 
 #endif // NONCOPYABLE_HPP_INCLUDED

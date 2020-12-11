@@ -30,126 +30,129 @@
 
 /***** MapEditorGUI *****/
 
-class MapEditorGUI : public GUI {
+namespace am {
 
-public:
+	class MapEditorGUI : public GUI {
 
-	MapEditorGUI() = delete;
-	MapEditorGUI(Window& window);
-	virtual ~MapEditorGUI() = default;
+	public:
 
-	void handleInputs(InputManager& input, Window& window);
+		MapEditorGUI() = delete;
+		MapEditorGUI(Window& window);
+		virtual ~MapEditorGUI() = default;
 
-	void convertData(Vector2u& numberSheet, Vector2u& numberTiles, std::string& nameStr, std::string& pathStr, bool& succeed);
+		void handleInputs(InputManager& input, Window& window);
 
-	bool buttonState(InputManager& input, Window& window);
+		void convertData(Vector2u& numberSheet, Vector2u& numberTiles, std::string& nameStr, std::string& pathStr, bool& succeed);
 
-private:
+		bool buttonState(InputManager& input, Window& window);
 
-	struct GUIObjects {
+	private:
 
-		TextBox name{ TextBox::Type::LongThin };
-		TextBox path{ TextBox::Type::LongThin };
-		TextBox numberXSheet{ TextBox::Type::Thin };
-		TextBox numberYSheet{ TextBox::Type::Thin };
-		TextBox numberXTiles{ TextBox::Type::Thin };
-		TextBox numberYTiles{ TextBox::Type::Thin };
+		struct GUIObjects {
 
-		RectButton loadButton{ "Load", Vector2f(140,45), Color::Red };
+			TextBox name{ TextBox::Type::LongThin };
+			TextBox path{ TextBox::Type::LongThin };
+			TextBox numberXSheet{ TextBox::Type::Thin };
+			TextBox numberYSheet{ TextBox::Type::Thin };
+			TextBox numberXTiles{ TextBox::Type::Thin };
+			TextBox numberYTiles{ TextBox::Type::Thin };
+
+			RectButton loadButton{ "Load", Vector2f(140,45), Color::Red };
+		};
+
+		GUIObjects guiObjects_;
+
+		void buildGui(); // Constructs the style of the widgets of the GUI
 	};
 
-	GUIObjects guiObjects_;
+	/***** MapEditorPalete *****/
 
-	void buildGui(); // Constructs the style of the widgets of the GUI
-};
+	class MapEditorPalete : NonCopyable {
 
-/***** MapEditorPalete *****/
+	public:
 
-class MapEditorPalete : NonCopyable {
+		MapEditorPalete() = default;
 
-public:
+		virtual ~MapEditorPalete() = default;
 
-	MapEditorPalete() = default;
+		void loadPalete(const Vector2u& numberTiles, const std::string& path);
 
-	virtual ~MapEditorPalete() = default;
+		void handleClick(InputManager& input, Sprite& currentSprite, int& currentKey);
 
-	void loadPalete(const Vector2u& numberTiles, const std::string& path);
+		SpriteSheet getPaleteSprite() const;
 
-	void handleClick(InputManager& input, Sprite& currentSprite, int& currentKey);
+		void drawSheetPalete();
 
-	SpriteSheet getPaleteSprite() const;
+		inline bool isOpen() const; // Tells if the palete is open (sf::RenderWindow object)
 
-	void drawSheetPalete();
+		static inline bool isClosed(Event& event);
 
-	inline bool isOpen() const; // Tells if the palete is open (sf::RenderWindow object)
+		inline bool isEvent(Event& event);
 
-	static inline bool isClosed(Event& event);
+		void close();
 
-	inline bool isEvent(Event& event);
+	private:
 
-	void close();
+		SpriteSheet sheet_{ "ress2/tilesMap.png", Vector2u(1,1) };
 
-private:
+		std::unordered_map<int, Sprite> sprites_; // A sprite is associated with a key (tile mapping) : for instance the first tile in the sheet has the key 0
+		sf::RenderWindow paleteWindow_;
 
-	SpriteSheet sheet_{ "ress2/tilesMap.png", Vector2u(1,1) };
-
-	std::unordered_map<int, Sprite> sprites_; // A sprite is associated with a key (tile mapping) : for instance the first tile in the sheet has the key 0
-	sf::RenderWindow paleteWindow_;
-
-	void mappingPalete(); // Set the tiles representing the palete
-};
-
-/***** MapEditor *****/
-
-class MapEditor : NonCopyable {
-
-public:
-
-	MapEditor();
-	virtual ~MapEditor() = default;
-
-	void load();
-
-private:
-
-	struct Data {
-
-		Vector2u numberSheet{ 1,1 };
-		Vector2u numberTiles{ 1,1 };
-		std::string path{ "ress/tilesMap.png" }; // Default path sheet
-		std::string name{};
-		bool buttonClicked{ false };
+		void mappingPalete(); // Set the tiles representing the palete
 	};
 
-	Data data_;
+	/***** MapEditor *****/
 
-	/* The Camera object will be useful later in order to use views during the level building */
+	class MapEditor : NonCopyable {
 
-	Camera camera_{}; // TODO
-	Window window_{ Vector2u(420,420), "Editor", camera_ };
+	public:
 
-	MapEditorGUI gui_{ window_ };
-	MapEditorPalete palete_;
+		MapEditor();
+		virtual ~MapEditor() = default;
 
-	std::vector<Sprite> sprites_;
-	Matrix<int> mapMatrix_;
+		void load();
 
-	Sprite currentSprite_;
-	int currentKey_;
+	private:
 
-	void loadData(bool& succeed);
+		struct Data {
 
-	void mapping();
+			Vector2u numberSheet{ 1,1 };
+			Vector2u numberTiles{ 1,1 };
+			std::string path{ "ress/tilesMap.png" }; // Default path sheet
+			std::string name{};
+			bool buttonClicked{ false };
+		};
 
-	void handleInputs(InputManager& input, bool& succeed);
+		Data data_;
 
-	void changeTile(const Vector2u& index);
+		/* The Camera object will be useful later in order to use views during the level building */
 
-	static inline Vector2u positionToIndex(const Vector2f& position, const MapEditorPalete& palete);
+		Camera camera_{}; // TODO
+		Window window_{ Vector2u(420,420), "Editor", camera_ };
 
-	static bool const save(const std::string& fileName, const std::string& pathTexture, const Vector2u& numberTilesSheet, const Vector2u& numberTiles, const  Matrix<int>& mapMatrix);
+		MapEditorGUI gui_{ window_ };
+		MapEditorPalete palete_;
 
-	void drawMap(Window& window);
-};
+		std::vector<Sprite> sprites_;
+		Matrix<int> mapMatrix_;
+
+		Sprite currentSprite_;
+		int currentKey_;
+
+		void loadData(bool& succeed);
+
+		void mapping();
+
+		void handleInputs(InputManager& input, bool& succeed);
+
+		void changeTile(const Vector2u& index);
+
+		static inline Vector2u positionToIndex(const Vector2f& position, const MapEditorPalete& palete);
+
+		static bool const save(const std::string& fileName, const std::string& pathTexture, const Vector2u& numberTilesSheet, const Vector2u& numberTiles, const  Matrix<int>& mapMatrix);
+
+		void drawMap(Window& window);
+	};
+}
 
 #endif // MAPEDITOR_HPP_INCLUDED

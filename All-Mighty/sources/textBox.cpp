@@ -1,9 +1,9 @@
 #include "textBox.hpp"
 
-TextBox::TextBox() : TextBox(Type::Thin)
+am::TextBox::TextBox() : TextBox(Type::Thin)
 {}
 
-TextBox::TextBox(Type type) : Widget(Vector2f(0,0), Vector2f(0,0)), type_(type), currentTextWidth_(text_.getBox().w), textLabel_(""){
+am::TextBox::TextBox(Type type) : Widget(Vector2f(0,0), Vector2f(0,0)), type_(type), currentTextWidth_(text_.getBox().w), textLabel_(""){
 
     if(type_ == Type::Perso)
         size_ = Vector2f(0,0);
@@ -23,13 +23,13 @@ TextBox::TextBox(Type type) : Widget(Vector2f(0,0), Vector2f(0,0)), type_(type),
     setTextStyle(15, "ress/arial.ttf", Color::Black);
 }
 
-void TextBox::setTextString(const std::string& text){
+void am::TextBox::setTextString(const std::string& text){
 
     text_.setTextString(text);
     update();
 }
 
-void TextBox::setLabel(const std::string& labelString, std::size_t charSize, const Color& color){
+void am::TextBox::setLabel(const std::string& labelString, std::size_t charSize, const Color& color){
 
     textLabel_.setTextString(labelString);
     textLabel_.setColor(color);
@@ -37,7 +37,7 @@ void TextBox::setLabel(const std::string& labelString, std::size_t charSize, con
     textLabel_.setFont("ress/arial.ttf");
 }
 
-void TextBox::setTextStyle(std::size_t charSize, const std::string& font, const Color& color){
+void am::TextBox::setTextStyle(std::size_t charSize, const std::string& font, const Color& color){
 
     text_.setCharSize(charSize);
     text_.setFont(font);
@@ -46,45 +46,45 @@ void TextBox::setTextStyle(std::size_t charSize, const std::string& font, const 
     update();
 }
 
-void TextBox::setOutline(float thickness, const Color& color) {
+void am::TextBox::setOutline(float thickness, const Color& color) {
 
     rectBox_.setOutlineThickness(thickness);
     rectBox_.setOutlineColor(color);
 }
 
-void TextBox::setSize(const Vector2f& newSize){
+void am::TextBox::setSize(const Vector2f& newSize){
 
     rectBox_.setSize(newSize);
     update();
 }
 
-void TextBox::setPosition(const Vector2f& newPosition){
+void am::TextBox::setPosition(const Vector2f& newPosition){
 
     rectBox_.setPosition(newPosition);
     update();
 }
 
-Vector2f TextBox::getSize() const{
+am::Vector2f am::TextBox::getSize() const{
 
     return rectBox_.getSize();
 }
 
-Vector2f TextBox::getPosition() const{
+am::Vector2f am::TextBox::getPosition() const{
 
     return Vector2f(rectBox_.getPosition().x, rectBox_.getPosition().y);
 }
 
-Vector4f TextBox::getBox() const{
+am::Vector4f am::TextBox::getBox() const{
 
     return rectBox_.getBox();
 }
 
-std::string TextBox::getText() const{
+std::string am::TextBox::getText() const{
 
     return text_.getString();
 }
 
-bool& TextBox::isClicked(InputManager& input, Window& window) noexcept{
+bool& am::TextBox::isClicked(InputManager& input, Window& window) noexcept{
 
     if(Collision::intersectMouse(*this, window) && input.clickLeft())
         clicked_ = true;
@@ -104,7 +104,7 @@ bool& TextBox::isClicked(InputManager& input, Window& window) noexcept{
     return clicked_;
 }
 
-void TextBox::manageTextEntered(InputManager& input, Window& window){
+void am::TextBox::manageTextEntered(InputManager& input, Window& window){
 
     if(isClicked(input, window)){
 
@@ -122,7 +122,7 @@ void TextBox::manageTextEntered(InputManager& input, Window& window){
     }
 }
 
-void TextBox::responsive(Text& text, Rectangle& rectBox, float& currentTextWidth){
+void am::TextBox::responsive(Text& text, Rectangle& rectBox, float& currentTextWidth){
 
     if(currentTextWidth >= rectBox.getBox().w){ // TODO
 
@@ -137,12 +137,12 @@ void TextBox::responsive(Text& text, Rectangle& rectBox, float& currentTextWidth
     text.setPosition(Vector2f(rectBox.getBox().x, rectBox.getBox().y));
 }
 
-void TextBox::update(){
+void am::TextBox::update(){
 
     responsive(text_, rectBox_, currentTextWidth_);
 }
 
-void TextBox::draw(sf::RenderTarget& target, sf::RenderStates states) const{
+void am::TextBox::draw(sf::RenderTarget& target, sf::RenderStates states) const{
 
     target.draw(rectBox_, states);
     target.draw(text_, states);

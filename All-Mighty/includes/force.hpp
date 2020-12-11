@@ -25,30 +25,33 @@
 *
 **************************************************************************************/
 
-class Force : NonCopyable{
+namespace am {
 
-public:
+    class Force : NonCopyable {
 
-    enum class Type { None, Gravity, Perso }; // Pre-type (some classics forces) (TODO)
+    public:
 
-    Force() = default;
-    Force(Type type);
-    Force(float norm, const Vector2f& dir);
-    virtual ~Force();
-    void addEntity(ConcreteEntity& concreteEntity); // Add an entity to the Vector
-    void setNorm(float norm); // Sets the norm of the vector
-    void setDirection(const Vector2f& dir); // Sets the direction of the vector
-    void reset();
-    Vector2f getMoveVector() const;
-    void apply(ConcreteEntity& entity); // It will apply the force every seconds to one entity
-    void update(); // Apply the force to every subject entities
+        enum class Type { None, Gravity, Perso }; // Pre-type (some classics forces) (TODO)
 
-private:
-    Type type_; // The type of the law
-    float norm_;
-    Vector2f dir_;
-    std::vector<std::reference_wrapper<ConcreteEntity>> entities_; // Entities subject to the law
-    StopWatch time_;
-};
+        Force() = default;
+        Force(Type type);
+        Force(float norm, const Vector2f& dir);
+        virtual ~Force();
+        void addEntity(ConcreteEntity& concreteEntity); // Add an entity to the Vector
+        void setNorm(float norm); // Sets the norm of the vector
+        void setDirection(const Vector2f& dir); // Sets the direction of the vector
+        void reset();
+        Vector2f getMoveVector() const;
+        void apply(ConcreteEntity& entity); // It will apply the force every seconds to one entity
+        void update(); // Apply the force to every subject entities
+
+    private:
+        Type type_; // The type of the law
+        float norm_;
+        Vector2f dir_;
+        std::vector<std::reference_wrapper<ConcreteEntity>> entities_; // Entities subject to the law
+        StopWatch time_;
+    };
+}
 
 #endif // FORCE_HPP_INCLUDED

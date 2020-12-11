@@ -13,14 +13,17 @@
 *
 ********************************/
 
-class AudioManager : public ResourcesManager<std::string, Audio>{
+namespace am {
 
-public:
-    AudioManager() = default;
-    virtual ~AudioManager();
-    void playAll();
-    void pauseAll();
-    void stopAll();
-};
+    class AudioManager : public ResourcesManager<std::string, Audio> {
+
+    public:
+        AudioManager() = default;
+        virtual ~AudioManager();
+        void playAll();
+        void pauseAll();
+        void stopAll();
+    };
+}
 
 #endif // AUDIOMANAGER_HPP_INCLUDED

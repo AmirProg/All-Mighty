@@ -29,26 +29,29 @@
 *
 ***********************************************************************************/
 
-class Window : public sf::RenderWindow, NonCopyable{
+namespace am {
 
-public:
-    Window() = delete;
-    Window(const Vector2u& sizeWindow, const std::string& nameWindow, Camera& camera);
-    virtual ~Window() = default;
-    virtual void create(); // Create the window or recreate it
-    void setSize(const Vector2u& newSize);
-    void setCamera(Camera& camera); // Set the new camera you want your window to be associated with
-    void setFPSLimit(std::size_t fps);
-    bool isEvent(Event& event);
-    void nextView(); // Go to the next view on the camera
-    void previousView(); // Go to the previous view on the camera
-    Vector2f viewPosition(const Vector2f& position, int id); // Convert window coordinate into view coordinate
+    class Window : public sf::RenderWindow, NonCopyable {
 
-private:
-    Vector2u sizeWindow_;
-    std::string nameWindow_;
-    std::reference_wrapper<Camera> camera_;
-    std::pair<int, std::unique_ptr<sf::View>> currentView_; // A key and a pointer on the current view
-};
+    public:
+        Window() = delete;
+        Window(const Vector2u& sizeWindow, const std::string& nameWindow, Camera& camera);
+        virtual ~Window() = default;
+        virtual void create(); // Create the window or recreate it
+        void setSize(const Vector2u& newSize);
+        void setCamera(Camera& camera); // Set the new camera you want your window to be associated with
+        void setFPSLimit(std::size_t fps);
+        bool isEvent(Event& event);
+        void nextView(); // Go to the next view on the camera
+        void previousView(); // Go to the previous view on the camera
+        Vector2f viewPosition(const Vector2f& position, int id); // Convert window coordinate into view coordinate
+
+    private:
+        Vector2u sizeWindow_;
+        std::string nameWindow_;
+        std::reference_wrapper<Camera> camera_;
+        std::pair<int, std::unique_ptr<sf::View>> currentView_; // A key and a pointer on the current view
+    };
+}
 
 #endif // WINDOW_HPP_INCLUDED

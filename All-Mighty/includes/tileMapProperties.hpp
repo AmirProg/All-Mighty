@@ -19,21 +19,24 @@
 *                                                            *
 *************************************************************/
 
-class TileMapProperties : NonCopyable{
+namespace am {
 
-public:
+    class TileMapProperties : NonCopyable {
 
-    using propMap = std::unordered_map<int, std::string>;
+    public:
 
-    TileMapProperties() = default;
-    TileMapProperties(const propMap&);
-    virtual ~TileMapProperties();
-    void addState(int tileNumber, const std::string& state); // The integer representing the tile is now considered as under the state
-    bool isState(int tileNumber, const std::string& state); // Look if a tile number is a certain type of tile (state)
+        using propMap = std::unordered_map<int, std::string>;
 
-private:
+        TileMapProperties() = default;
+        TileMapProperties(const propMap&);
+        virtual ~TileMapProperties();
+        void addState(int tileNumber, const std::string& state); // The integer representing the tile is now considered as under the state
+        bool isState(int tileNumber, const std::string& state); // Look if a tile number is a certain type of tile (state)
 
-    propMap properties_; // The int is the number of the tile in the TileMap's Matrix, the std::string is the state of this tile
-};
+    private:
+
+        propMap properties_; // The int is the number of the tile in the TileMap's Matrix, the std::string is the state of this tile
+    };
+}
 
 #endif // TILEMAPPROPERTIES_HPP_INCLUDED

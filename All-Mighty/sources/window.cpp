@@ -1,35 +1,35 @@
 #include "window.hpp"
 
-Window::Window(const Vector2u& sizeWindow, const std::string& nameWindow, Camera& camera) : sizeWindow_(sizeWindow),nameWindow_(nameWindow), camera_(camera) {
+am::Window::Window(const Vector2u& sizeWindow, const std::string& nameWindow, Camera& camera) : sizeWindow_(sizeWindow),nameWindow_(nameWindow), camera_(camera) {
 
     setTitle(nameWindow_);
     setSize(sizeWindow);
 }
 
-void Window::create(){
+void am::Window::create(){
 
     sf::RenderWindow::create(sf::VideoMode(sizeWindow_.x, sizeWindow_.y), nameWindow_);
     currentView_.first = -1; // At the beginning there is no view
 }
 
 
-void Window::setSize(const Vector2u& newSize){
+void am::Window::setSize(const Vector2u& newSize){
 
     sizeWindow_ = newSize;
     sf::RenderWindow::setSize(sf::Vector2u(unsigned int(newSize.x), unsigned int(newSize.y)));
 }
 
-void Window::setCamera(Camera& camera){
+void am::Window::setCamera(Camera& camera){
 
     camera_ = camera;
 }
 
-void Window::setFPSLimit(std::size_t fps){
+void am::Window::setFPSLimit(std::size_t fps){
 
     setFramerateLimit(fps);
 }
 
-void Window::nextView(){
+void am::Window::nextView(){
 
     ++currentView_.first;
 
@@ -43,7 +43,7 @@ void Window::nextView(){
     setView(*(currentView_.second)); // Set the new view
 }
 
-void Window::previousView(){
+void am::Window::previousView(){
 
     --currentView_.first;
 
@@ -57,14 +57,14 @@ void Window::previousView(){
     setView(*(currentView_.second));
 }
 
-Vector2f Window::viewPosition(const Vector2f& position, int id){
+am::Vector2f am::Window::viewPosition(const Vector2f& position, int id){
 
     Vector2f viewPosition { mapPixelToCoords(sf::Vector2i(position.x,position.y), camera_.get().operator[](id)).x,
                             mapPixelToCoords(sf::Vector2i(position.x,position.y), camera_.get().operator[](id)).y };
     return viewPosition;
 }
 
-bool Window::isEvent(Event& event){
+bool am::Window::isEvent(Event& event){
 
     return pollEvent(event);
 }

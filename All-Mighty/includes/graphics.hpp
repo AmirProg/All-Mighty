@@ -5,6 +5,7 @@
 #include "shape.hpp"
 #include "sprite.hpp"
 #include "map.hpp"
+#include "tileMapProperties.hpp"
 #include "animation.hpp"
 #include "button.hpp"
 #include "textBox.hpp"

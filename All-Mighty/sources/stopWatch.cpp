@@ -1,53 +1,53 @@
 #include "stopWatch.hpp"
 
-StopWatch::StopWatch(Accuracy accuracy) : timeLimit_(0), clock_(), time_(sf::Time::Zero), running_(false), accuracy_(accuracy)
+am::StopWatch::StopWatch(Accuracy accuracy) : timeLimit_(0), clock_(), time_(sf::Time::Zero), running_(false), accuracy_(accuracy)
 {}
 
-void StopWatch::start(){
+void am::StopWatch::start(){
 
     running_ = true;
     clock_.restart();
 }
 
-void StopWatch::stop(){
+void am::StopWatch::stop(){
 
     running_ = false;
     time_ += clock_.getElapsedTime();
 }
 
-void StopWatch::reset(){
+void am::StopWatch::reset(){
 
     running_ = false;
     time_ = sf::Time::Zero;
 }
 
-void StopWatch::restart(){
+void am::StopWatch::restart(){
 
     reset();
     start();
 }
 
-void StopWatch::saveElapsed() {
+void am::StopWatch::saveElapsed() {
 
     previousElapsed_ += getElapsedTime();
 }
 
-float StopWatch::getTotalElapsedTime() const {
+float am::StopWatch::getTotalElapsedTime() const {
 
     return previousElapsed_;
 }
 
-void StopWatch::changeAccuracy(Accuracy accuracy){
+void am::StopWatch::changeAccuracy(Accuracy accuracy){
 
     accuracy_ = accuracy;
 }
 
-bool StopWatch::isRunning() const{
+bool am::StopWatch::isRunning() const{
 
     return running_;
 }
 
-sf::Int32 StopWatch::getElapsedTime() const{
+sf::Int32 am::StopWatch::getElapsedTime() const{
 
     if(isRunning()){ // If the stop watch is working then we return the time plus the time counted by the stop watch
 

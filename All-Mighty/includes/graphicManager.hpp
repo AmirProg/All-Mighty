@@ -12,18 +12,21 @@
 *
 ********************************/
 
-class GraphicManager : public ResourcesManager<std::string, sf::Drawable>, public sf::Drawable{
+namespace am {
 
-public:
+    class GraphicManager : public ResourcesManager<std::string, sf::Drawable>, public sf::Drawable {
 
-    GraphicManager() = default;
-    GraphicManager(GraphicManager&&) noexcept = default;
-    GraphicManager& operator=(GraphicManager&&) noexcept = default;
-    virtual ~GraphicManager();
+    public:
 
-private:
+        GraphicManager() = default;
+        GraphicManager(GraphicManager&&) noexcept = default;
+        GraphicManager& operator=(GraphicManager&&) noexcept = default;
+        virtual ~GraphicManager();
 
-    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-};
+    private:
+
+        virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+    };
+}
 
 #endif // GRAPHICMANAGER_HPP_INCLUDED

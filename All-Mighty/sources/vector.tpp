@@ -1,109 +1,151 @@
 #include "vector.hpp"
 
-/* Vector2<> */
-
-template<typename T>
-Vector2<T>::Vector2(){}
-
-template<typename T>
-Vector2<T>::Vector2(const T& a, const T& b) : x(a),y(b){}
-
-template<typename T>
-float Vector2<T>::norm() const{
-    return sqrt(x*x + y*y);
-}
-
-template<typename T>
-float Vector2<T>::distance(const Vector2<T>& b) const{
-    return sqrt((b.x - x)*(b.x - x) + (b.y - y)*(b.y - y));
-}
-
-template<typename T>
-Vector2<T> Vector2<T>::operator+(const Vector2<T>& a) {
-    return Vector2<T>(x + a.x, y + a.y);
-}
-
-template<typename T>
-Vector2<T> Vector2<T>::operator+=(Vector2<T> a){
-
-    x = x + a.x;
-    y = y + a.y;
-
-    return *this;;
-}
-
-template<typename T>
-Vector2<T> Vector2<T>::operator-(const Vector2<T>& a){
-    return Vector2<T>(x - a.x, y - a.y);
-}
-
-template<typename T>
-Vector2<T> Vector2<T>::operator-=(Vector2<T> a){
-
-    x = x - a.x;
-    y = y - a.y;
-
-    return *this;
-}
-
-template<typename T>
-bool Vector2<T>::operator==(const Vector2<T>& a) const{
-    return (x == a.x && y == a.y);
-}
-
-template<typename T>
-bool Vector2<T>::operator!=(const Vector2<T>& a) const{
-    return !(Vector2<T>(x,y)==a);
-}
-
-/* Vector4<> */
+/* ---- Vector4<> ---- */
 
 template<typename U>
-Vector4<U>::Vector4(const U& x, const U& y,const U& a,const U& b) : Vector2<U>(x,y),w(a),h(b){}
+am::Vector4<U>::Vector4() : Vector4(0,0,0,0)
+{}
 
 template<typename U>
-float Vector4<U>::norm() const{
-    return sqrt(this->x-this->x + this->y*this->y + w*w + h*h);
-}
+am::Vector4<U>::Vector4(const U& a, const U& b,const U& c,const U& d) : x(a), y(b), w(c), h(d)
+{}
 
 template<typename U>
-Vector4<U> Vector4<U>::operator+(const Vector4<U>& a){
-    return Vector4<U>(this->x + a.x, this->y + a.y, w + a.w, h + a.h);
-}
+am::Vector4<U>::Vector4(const Vector4<U>& a) : x(a.x), y(a.y), w(a.w), h(a.h)
+{}
 
 template<typename U>
-Vector4<U> Vector4<U>::operator+=(Vector4<U> a){
+am::Vector4<U>& am::Vector4<U>::operator=(const Vector4<U>& a) noexcept{
 
-    this->x = this->x + a.x;
-    this->y = this->y + a.y;
-    w = w + a.w;
-    h = h + a.h;
+    x = a.x;
+    y = a.y;
+    w = a.w;
+    h = a.h;
 
     return *this;
 }
 
 template<typename U>
-Vector4<U> Vector4<U>::operator-(const Vector4<U>& a){
-    return Vector4<U>(this->x - a.x, this->y - a.y,w-a.w,h-a.h);
+float am::Vector4<U>::norm() const{
+
+    return static_cast<float>(sqrt(this->x-this->x + this->y*this->y + w*w + h*h));
 }
 
 template<typename U>
-Vector4<U> Vector4<U>::operator-=(Vector4<U> a){
+float am::Vector4<U>::distance(const Vector4<U>& a) const{
 
-    this->x = this->x - a.x;
-    this->y = this->y - a.y;
-    w = w - a.w;
-    h = h - a.h;
-
-    return *this;;
+    return static_cast<float>(sqrt((x - a.x) * (x - a.x) +
+                                   (y - a.y) * (y - a.y) +
+                                   (w - a.w) * (w - a.w) +
+                                   (h - a.h) * (h - a.h)));
 }
 
 template<typename U>
-bool Vector4<U>::operator==(const Vector4<U>& a) const{
+am::Vector4<U> operator+(am::Vector4<U> a, const am::Vector4<U>& b) noexcept{
+
+    return a+=b;
+}
+
+template<typename U>
+am::Vector4<U> operator-(am::Vector4<U> a, const am::Vector4<U>& b) noexcept{
+
+    return a-=b;
+}
+
+template<typename U>
+am::Vector4<U> am::Vector4<U>::operator+=(const Vector4<U>& a) noexcept{
+
+    this->x += a.x;
+    this->y += a.y;
+    w += a.w;
+    h += a.h;
+
+    return *this;
+}
+
+template<typename U>
+am::Vector4<U> am::Vector4<U>::operator-=(const Vector4<U>& a) noexcept{
+
+    this->x -=  a.x;
+    this->y -= this->y - a.y;
+    w -= a.w;
+    h -= h - a.h;
+
+    return *this;
+}
+
+template<typename U>
+bool am::Vector4<U>::operator==(const Vector4<U>& a) const noexcept{
     return (this->x == a.x && this->y == a.y && w == a.w && h == a.h);
 }
 
 template<typename U>
-bool Vector4<U>::operator!=(const Vector4<U>& a) const{
+bool am::Vector4<U>::operator!=(const Vector4<U>& a) const noexcept{
     return !(Vector4<U>(this->x,this->y,w,h) == a);
+}
+
+
+/* ---- Vector2<> ---- */
+
+template<typename T>
+am::Vector2<T>::Vector2() : Vector2(0,0)
+{}
+
+template<typename T>
+am::Vector2<T>::Vector2(const T& a, const T& b) : Vector4<T>(a,b,0,0)
+{}
+
+template<typename T>
+am::Vector2<T>::Vector2(const Vector2<T>& a) : Vector2(a.x, a.y)
+{}
+
+template<typename T>
+am::Vector2<T>& am::Vector2<T>::operator=(const Vector2<T>& a) noexcept{
+
+    this->x = a.x;
+    this->y = a.y;
+    this->w = 0;
+    this->h = 0;
+
+    return *this;
+}
+
+template<typename T>
+am::Vector2<T> operator+(am::Vector2<T> a, const am::Vector2<T>& b) noexcept{
+
+    return a+=b;
+}
+
+template<typename T>
+am::Vector2<T> operator-(am::Vector2<T> a, const am::Vector2<T>& b) noexcept{
+
+    return a-=b;
+}
+
+template<typename T>
+am::Vector2<T> am::Vector2<T>::operator+=(const Vector2<T>& a) noexcept{
+
+    this->x += a.x;
+    this->y += a.y;
+
+    return *this;;
+}
+
+template<typename T>
+am::Vector2<T> am::Vector2<T>::operator-=(const Vector2<T>& a) noexcept{
+
+    this->x -= a.x;
+    this->y -= a.y;
+
+    return *this;
+}
+
+template<typename T>
+bool am::Vector2<T>::operator==(const Vector2<T>& a) const noexcept{
+    return (this->x == a.x && this->y == a.y);
+}
+
+template<typename T>
+bool am::Vector2<T>::operator!=(const Vector2<T>& a) const noexcept{
+    return !(Vector2<T>(this->x,this->y)==a);
 }

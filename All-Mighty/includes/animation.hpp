@@ -26,28 +26,31 @@
 *
 ******************************************************************************************************************************************/
 
-class Animation : private NonCopyable{
+namespace am {
 
-public:
-    enum class Status { None, Disable, Active, MAX };
-    Animation() = delete;
-    Animation& operator=(Animation&&) noexcept;
-    Animation(SpriteSheet& spriteSheet);
-    virtual ~Animation() = default;
-    void setSpriteSheet(SpriteSheet& spriteSheet);
-    void setFrame(std::size_t frame); // Set the frame of the animation
-    void restart(); // Reload the clock and the number of sprite animated
-    void setBase(const Vector2u& base); // The first sprite on the screen (row,line) (x,y), set (-1,-1) allow to have not any sprite in the screen
-    void playAnimationLine(std::size_t lineSheet); // Play the animation according to the clock and the line on sheet
-    void playAnimation(); // Play the entire sprite sheet
-    void pauseAnimation();
+    class Animation : private NonCopyable {
 
-private:
-    std::reference_wrapper<SpriteSheet> spriteSheet_; // Reference on the current spriteSheet_ animated
-    std::size_t frame_;
-    Vector2u currentSprite_; // The current sprite animated : (1,1) si the first one
-    StopWatch stopWatch_; // Time measure
-    Status status_;
-};
+    public:
+        enum class Status { None, Disable, Active, MAX };
+        Animation() = delete;
+        Animation& operator=(Animation&&) noexcept;
+        Animation(SpriteSheet& spriteSheet);
+        virtual ~Animation() = default;
+        void setSpriteSheet(SpriteSheet& spriteSheet);
+        void setFrame(std::size_t frame); // Set the frame of the animation
+        void restart(); // Reload the clock and the number of sprite animated
+        void setBase(const Vector2u& base); // The first sprite on the screen (row,line) (x,y), set (-1,-1) allow to have not any sprite in the screen
+        void playAnimationLine(std::size_t lineSheet); // Play the animation according to the clock and the line on sheet
+        void playAnimation(); // Play the entire sprite sheet
+        void pauseAnimation();
+
+    private:
+        std::reference_wrapper<SpriteSheet> spriteSheet_; // Reference on the current spriteSheet_ animated
+        std::size_t frame_;
+        Vector2u currentSprite_; // The current sprite animated : (1,1) si the first one
+        StopWatch stopWatch_; // Time measure
+        Status status_;
+    };
+}
 
 #endif // ANIMATION_HPP_INCLUDED

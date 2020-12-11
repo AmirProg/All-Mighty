@@ -16,31 +16,34 @@
 *
 *********************************************************************************/
 
-class StopWatch : private NonCopyable{
+namespace am {
 
-public:
+    class StopWatch : private NonCopyable {
 
-    enum class Accuracy { Seconds, Milliseconds, Microseconds, MAX };
+    public:
 
-    StopWatch(Accuracy accuracy);
-    virtual ~StopWatch() = default;
-    void start();
-    void stop();
-    void reset();
-    void restart();
-    void saveElapsed();
-    float getTotalElapsedTime() const;
-    void changeAccuracy(Accuracy accuracy);
-    bool isRunning() const;
-    sf::Int32 getElapsedTime() const;
+        enum class Accuracy { Seconds, Milliseconds, Microseconds, MAX };
 
-private:
-    float timeLimit_;
-    sf::Clock clock_;
-    sf::Time time_;
-    bool running_;
-    Accuracy accuracy_;
-    float previousElapsed_;
-};
+        StopWatch(Accuracy accuracy);
+        virtual ~StopWatch() = default;
+        void start();
+        void stop();
+        void reset();
+        void restart();
+        void saveElapsed();
+        float getTotalElapsedTime() const;
+        void changeAccuracy(Accuracy accuracy);
+        bool isRunning() const;
+        sf::Int32 getElapsedTime() const;
+
+    private:
+        float timeLimit_;
+        sf::Clock clock_;
+        sf::Time time_;
+        bool running_;
+        Accuracy accuracy_;
+        float previousElapsed_;
+    };
+}
 
 #endif // STOPWATCH_HPP_INCLUDED

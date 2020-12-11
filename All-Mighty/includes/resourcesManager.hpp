@@ -1,16 +1,17 @@
 #ifndef RESOURCESMANAGER_HPP_INCLUDED
 #define RESOURCESMANAGER_HPP_INCLUDED
 
-#include <unordered_map>
-#include <functional>
 #include "nonCopyable.hpp"
+#include <map>
+#include <functional>
 
-/*
+/****************************************************************************************************
+*
 * ~ ResourcesManager<> template class ~
 *
 * Every resources that you could use (graphics, audio...)
 *
-* You have to create an instance of an object before being able to add it to the std::unordered_map
+* You have to create an instance of an object before being able to add it to the std::map
 *
 * Ex : ResourcesManager<int, Sprite> spriteManager;
 *
@@ -23,68 +24,73 @@
 *
 * Make sure to load every Sprites, Sounds and Musics only once
 *
-*/
+*****************************************************************************************************/
 
 /* MAIN CLASS RESOURCES MANAGER <> */
 
-template<typename Key, typename T>
-class ResourcesManager : private NonCopyable{
+namespace am {
 
-public:
-    ResourcesManager()
-    {}
+    template<typename Key, typename T>
+    class ResourcesManager : private NonCopyable {
 
-    ResourcesManager(const std::unordered_map<Key, std::reference_wrapper<T>>& resources) : resources_(resources)
-    {}
+    public:
+        ResourcesManager()
+        {}
 
-    ResourcesManager(const ResourcesManager&& resources) : ResourcesManager(std::move(resources.resources_))
-    {}
+        ResourcesManager(const std::map<Key, std::reference_wrapper<T>>& resources) : resources_(resources)
+        {}
 
-    ResourcesManager& operator=(const ResourcesManager&& resources){
+        ResourcesManager(const ResourcesManager&& resources) : ResourcesManager(std::move(resources.resources_))
+        {}
 
-        resources_ = std::move(resources.resources_);
-        return *this;
-    }
+        ResourcesManager& operator=(const ResourcesManager&& resources) {
 
-    virtual ~ResourcesManager()
-        { this->clear(); }
+            resources_ = std::move(resources.resources_);
+            return *this;
+        }
 
-    virtual void add(const Key& key, T& resource){
+        virtual ~ResourcesManager()
+        {
+            this->clear();
+        }
 
-        resources_.insert({key, resource});
-    }
+        virtual void add(const Key& key, T& resource) {
 
-    virtual void add(const Key& key, const T& resource){
+            resources_.insert({ key, resource });
+        }
 
-        add(key, resource);
-    }
+        virtual void add(const Key& key, const T& resource) {
 
-    void remove(const Key& key){
+            add(key, resource);
+        }
 
-        resources_.erase(key);
-    }
+        void remove(const Key& key) {
 
-    void clear(){
+            resources_.erase(key);
+        }
 
-        resources_.clear();
-    }
+        void clear() {
 
-    /*void doToElements(auto action){ // action is a function that is applied to every elements of the std::unordered_map
-        for(auto& i : resources_)
-            action(i.second);
-    }*/
+            resources_.clear();
+        }
 
-    T& operator[](const Key& key){
+        /*void doToElements(auto action){ // action is a function that is applied to every elements of the std::unordered_map
+            for(auto& i : resources_)
+                action(i.second);
+        }*/
 
-        auto it { resources_.find(key) }; // Iterator on the element
-        assert((it != resources_.end()) && "Fail seeking resource"); // If the iterator has reached the end then there is no element associated to that key
+        T& operator[](const Key& key) {
 
-        return it->second.get();
-    }
+            auto it{ resources_.find(key) }; // Iterator on the element
+            assert((it != resources_.end()) && "Fail seeking resource"); // If the iterator has reached the end then there is no element associated to that key
 
-protected:
-    std::unordered_map<Key, std::reference_wrapper<T>> resources_;
+            return it->second.get();
+        }
 
-};
+    protected:
+        std::map<Key, std::reference_wrapper<T>> resources_;
+
+    };
+}
 
 #endif // RESOURCESMANAGER_HPP_INCLUDED

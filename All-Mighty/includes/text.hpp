@@ -23,50 +23,53 @@
 *
 *****************************************/
 
-typedef sf::Color Color;
+namespace am {
 
-class Text : public sf::Text, public VisualEntity{
+    typedef sf::Color Color;
 
-public:
-    // enum class TextStyle { None = -1, Default, Perso, MAX };
-    Text();
-    Text(const std::string& stringText);
-    Text(const std::string& stringText, std::size_t charSize, const Vector2f& position, const Color& color);
-    Text(const Text&) = default;
-    Text(Text&&) noexcept = default;
-    Text& operator=(Text&&) noexcept = default;
-    virtual ~Text() = default;
-    Text& operator=(const Text&) = default;
-    void setTextString(const std::string& stringText);
-    void setFont(const std::string& path);
-    void setColor(const Color& color);
-    void setCharSize(std::size_t charSize);
-    void setPosition(const Vector2f& position);
-    Vector4f getBox() const;
-    inline std::string getString() const;
-    Vector2f getSizeOneLetter() const;
-    void pop(); // Erase the last char of the text
-    Text operator+=(Text text) noexcept;
-    Text operator+=(std::string s) noexcept;
-    Text operator+=(char c) noexcept;
+    class Text : public sf::Text, public VisualEntity {
 
-    friend std::ostream& operator<<(std::ostream& os, const Text& text) {
+    public:
+        // enum class TextStyle { None = -1, Default, Perso, MAX };
+        Text();
+        Text(const std::string& stringText);
+        Text(const std::string& stringText, std::size_t charSize, const Vector2f& position, const Color& color);
+        Text(const Text&) = default;
+        Text(Text&&) noexcept = default;
+        Text& operator=(Text&&) noexcept = default;
+        virtual ~Text() = default;
+        Text& operator=(const Text&) = default;
+        void setTextString(const std::string& stringText);
+        void setFont(const std::string& path);
+        void setColor(const Color& color);
+        void setCharSize(std::size_t charSize);
+        void setPosition(const Vector2f& position);
+        Vector4f getBox() const;
+        inline std::string getString() const;
+        Vector2f getSizeOneLetter() const;
+        void pop(); // Erase the last char of the text
+        Text operator+=(Text text) noexcept;
+        Text operator+=(std::string s) noexcept;
+        Text operator+=(char c) noexcept;
 
-        os << text.getString();
-        return os;
-    }
+        friend std::ostream& operator<<(std::ostream& os, const Text& text) {
 
-private:
-    std::string stringText_;
-    std::size_t charSize_;
-    sf::Font font_;
-    Vector2f position_;
-    Color color_;
+            os << text.getString();
+            return os;
+        }
 
-    virtual void update() override;
-};
+    private:
+        std::string stringText_;
+        std::size_t charSize_;
+        sf::Font font_;
+        Vector2f position_;
+        Color color_;
 
-Text operator+(const Text& text1, const Text& text2) noexcept;
-Text operator+(const Text& text, const std::string& s) noexcept;
+        virtual void update() override;
+    };
+}
+
+am::Text operator+(const am::Text& text1, const am::Text& text2) noexcept;
+am::Text operator+(const am::Text& text, const std::string& s) noexcept;
 
 #endif // TEXT_HPP_INCLUDED

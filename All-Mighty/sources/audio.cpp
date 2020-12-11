@@ -1,20 +1,20 @@
 #include "audio.hpp"
 
-Audio::Audio()
+am::Audio::Audio()
 {}
 
-Audio::Audio(const std::string& path) : path_(path){}
+am::Audio::Audio(const std::string& path) : path_(path){}
 
 /* Sound */
 
-Sound::Sound() : Sound(""){}
+am::Sound::Sound() : Sound(""){}
 
-Sound::Sound(const std::string& path) : Audio(path){
+am::Sound::Sound(const std::string& path) : Audio(path){
 
     setTrack(path);
 }
 
-void Sound::setTrack(const std::string& path){
+void am::Sound::setTrack(const std::string& path){
 
     path_ = path;
 
@@ -32,27 +32,27 @@ void Sound::setTrack(const std::string& path){
     }
 }
 
-void Sound::play(){
+void am::Sound::play(){
     sf::Sound::play();
 }
-void Sound::pause(){
+void am::Sound::pause(){
     sf::Sound::pause();
 }
 
-void Sound::stop(){
+void am::Sound::stop(){
     sf::Sound::stop();
 }
 
 /* Music */
 
-Music::Music(){}
+am::Music::Music(){}
 
-Music::Music(const std::string& path) : Audio(path){
+am::Music::Music(const std::string& path) : Audio(path){
 
     setTrack(path);
 }
 
-void Music::setTrack(const std::string& path){
+void am::Music::setTrack(const std::string& path){
 
     path_ = path;
 
@@ -68,17 +68,17 @@ void Music::setTrack(const std::string& path){
     }
 }
 
-void Music::play(){
+void am::Music::play(){
 
     sf::Music::play();
 }
 
-void Music::pause(){
+void am::Music::pause(){
 
     sf::Music::pause();
 }
 
-void Music::stop(){
+void am::Music::stop(){
 
     sf::Music::stop();
 }

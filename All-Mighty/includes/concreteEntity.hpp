@@ -20,22 +20,25 @@
 *
 *****************************************************************/
 
-class ConcreteEntity : NonCopyable{
+namespace am {
 
-public:
-    ConcreteEntity() = delete;
-    ConcreteEntity(sf::Transformable& transEntity, PhyEntity& phyEntity);
-    ConcreteEntity(ConcreteEntity&&) noexcept = default;
-    ConcreteEntity& operator=(ConcreteEntity&&) noexcept = default;
-    virtual ~ConcreteEntity() = default;
-    void bindTransEntity(sf::Transformable& transEntity);
-    void bindPhyEntity(PhyEntity& phyEntity);
-    void move(); // Move the concrete entity according to the velocity of the physcal object and the laws the object is submitted to
-    sf::Transformable& first(); // Gives the Transformable object
-    PhyEntity& second(); // Gives the Physic object
+    class ConcreteEntity : NonCopyable {
 
-private:
-    std::pair<sf::Transformable&, PhyEntity&> entity_;
-};
+    public:
+        ConcreteEntity() = delete;
+        ConcreteEntity(sf::Transformable& transEntity, PhyEntity& phyEntity);
+        ConcreteEntity(ConcreteEntity&&) noexcept = default;
+        ConcreteEntity& operator=(ConcreteEntity&&) noexcept = default;
+        virtual ~ConcreteEntity() = default;
+        void bindTransEntity(sf::Transformable& transEntity);
+        void bindPhyEntity(PhyEntity& phyEntity);
+        void move(); // Move the concrete entity according to the velocity of the physcal object and the laws the object is submitted to
+        sf::Transformable& first(); // Gives the Transformable object
+        PhyEntity& second(); // Gives the Physic object
+
+    private:
+        std::pair<sf::Transformable&, PhyEntity&> entity_;
+    };
+}
 
 #endif // CONCRETEENTITY_HPP_INCLUDED

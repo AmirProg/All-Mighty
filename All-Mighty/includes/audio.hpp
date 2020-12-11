@@ -23,50 +23,53 @@
 *
 *****************************************************************/
 
-class Audio : private NonCopyable{
+namespace am {
 
-public:
-    Audio();
-    Audio(const std::string& path);
-    ~Audio() = default;
-    virtual void setTrack(const std::string& path) = 0;
-    virtual void play() = 0;
-    virtual void pause() = 0;
-    virtual void stop() = 0;
+    class Audio : private NonCopyable {
 
-protected:
-    std::string path_; // The path leading to the audio file
-};
+    public:
+        Audio();
+        Audio(const std::string& path);
+        ~Audio() = default;
+        virtual void setTrack(const std::string& path) = 0;
+        virtual void play() = 0;
+        virtual void pause() = 0;
+        virtual void stop() = 0;
 
-/* Sound class */
+    protected:
+        std::string path_; // The path leading to the audio file
+    };
 
-class Sound : public Audio, sf::Sound{
+    /* Sound class */
 
-public:
-    Sound();
-    Sound(const std::string& path);
-    virtual ~Sound() = default;
-    virtual void setTrack(const std::string& path) override;
-    virtual void play() override;
-    virtual void pause() override;
-    virtual void stop() override;
+    class Sound : public Audio, sf::Sound {
 
-private:
-    sf::SoundBuffer buffer_; // Buffer
-};
+    public:
+        Sound();
+        Sound(const std::string& path);
+        virtual ~Sound() = default;
+        virtual void setTrack(const std::string& path) override;
+        virtual void play() override;
+        virtual void pause() override;
+        virtual void stop() override;
 
-/* Music class */
+    private:
+        sf::SoundBuffer buffer_; // Buffer
+    };
 
-class Music : public Audio, sf::Music{
+    /* Music class */
 
-public:
-    Music();
-    Music(const std::string& path);
-    virtual ~Music() = default;
-    virtual void setTrack(const std::string& path) override;
-    virtual void play() override;
-    virtual void pause() override;
-    virtual void stop() override;
-};
+    class Music : public Audio, sf::Music {
+
+    public:
+        Music();
+        Music(const std::string& path);
+        virtual ~Music() = default;
+        virtual void setTrack(const std::string& path) override;
+        virtual void play() override;
+        virtual void pause() override;
+        virtual void stop() override;
+    };
+}
 
 #endif // AUDIO_HPP_INCLUDED

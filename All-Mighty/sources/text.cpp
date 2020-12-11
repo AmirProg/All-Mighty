@@ -1,12 +1,12 @@
 #include "text.hpp"
 
-Text::Text() : Text("")
+am::Text::Text() : Text("")
 {}
 
-Text::Text(const std::string& stringText) : Text(stringText, 30, Vector2f(0,0), Color::White)
+am::Text::Text(const std::string& stringText) : Text(stringText, 30, Vector2f(0,0), Color::White)
 {}
 
-Text::Text(const std::string& stringText, std::size_t charSize, const Vector2f& position, const Color& color) : stringText_(stringText),
+am::Text::Text(const std::string& stringText, std::size_t charSize, const Vector2f& position, const Color& color) : stringText_(stringText),
                                                                                                                 charSize_(charSize),
                                                                                                                 position_(position),
                                                                                                                 color_(color){
@@ -18,13 +18,13 @@ Text::Text(const std::string& stringText, std::size_t charSize, const Vector2f& 
     setFont("ress/arial.ttf");
 }
 
-void Text::setTextString(const std::string& stringText){
+void am::Text::setTextString(const std::string& stringText){
 
     stringText_ = stringText;
     setString(stringText_);
 }
 
-void Text::setFont(const std::string& path){
+void am::Text::setFont(const std::string& path){
 
     try{
 
@@ -40,34 +40,35 @@ void Text::setFont(const std::string& path){
     }
 }
 
-void Text::setCharSize(std::size_t charSize){
+void am::Text::setCharSize(std::size_t charSize){
 
     charSize_ = charSize;
     setCharacterSize(charSize);
 }
 
-void Text::setColor(const Color& color){
+void am::Text::setColor(const Color& color){
 
     color_ = color;
     setFillColor(color);
 }
 
-void Text::setPosition(const Vector2f& position){
+void am::Text::setPosition(const Vector2f& position){
 
     position_ = position;
     sf::Text::setPosition(sf::Vector2f(position_.x,position_.y));
 }
 
-Vector4f Text::getBox() const{
+am::Vector4f am::Text::getBox() const{
 
     return Vector4f(getGlobalBounds().left, getGlobalBounds().top, getGlobalBounds().width, getGlobalBounds().height);
 }
 
-inline std::string Text::getString() const{
+inline std::string am::Text::getString() const{
+
     return stringText_;
 }
 
-Vector2f Text::getSizeOneLetter() const{
+am::Vector2f am::Text::getSizeOneLetter() const{
 
     Vector2f size {};
 
@@ -84,7 +85,7 @@ Vector2f Text::getSizeOneLetter() const{
     return size;
 }
 
-void Text::pop(){
+void am::Text::pop(){
 
     try{
 
@@ -101,40 +102,40 @@ void Text::pop(){
     }
 }
 
-Text operator+(const Text& text1, const Text& text2) noexcept{
+am::Text operator+(const am::Text& text1, const am::Text& text2) noexcept{
 
-    Text textCopy { text1 };
+    am::Text textCopy { text1 };
     textCopy += text2;
 
     return textCopy;
 }
 
-Text operator+(const Text& text, const std::string& s) noexcept{
+am::Text operator+(const am::Text& text, const std::string& s) noexcept{
 
-    Text textCopy { text };
+    am::Text textCopy { text };
     textCopy += s;
 
     return textCopy;
 }
 
-Text Text::operator+=(Text text) noexcept{
+am::Text am::Text::operator+=(Text text) noexcept{
 
     this->setTextString(getString() + text.getString());
     return *this;;
 }
 
-Text Text::operator+=(std::string s) noexcept{
+am::Text am::Text::operator+=(std::string s) noexcept{
 
     this->setTextString(getString() + s);
 
     return *this;;
 }
 
-Text Text::operator+=(char c) noexcept{
+am::Text am::Text::operator+=(char c) noexcept{
 
     this->setTextString(getString() + c);
     return *this;
 }
 
-void Text::update()
+void am::Text::update()
 {}

@@ -1,17 +1,17 @@
 #include "event.hpp"
 
-Event::Event(){}
+am::Event::Event(){}
 
-inline bool Event::isKeyboardEvent() const{
+inline bool am::Event::isKeyboardEvent() const{
 
     return type == sf::Event::KeyPressed || type == sf::Event::KeyReleased;
 }
 
-inline bool Event::isMouseEvent() const{
+inline bool am::Event::isMouseEvent() const{
 
     return type == sf::Event::MouseButtonPressed || type == sf::Event::MouseButtonReleased;
 }
 
- bool Event::close() const{
+ bool am::Event::close() const{
     return type == sf::Event::Closed;
 }

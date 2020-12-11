@@ -1,12 +1,12 @@
 #include "widget.hpp"
 
-Widget::Widget() : Widget(Vector2f(0,0),Vector2f(0,0))
+am::Widget::Widget() : Widget(Vector2f(0,0),Vector2f(0,0))
 {}
 
-Widget::Widget(const Vector2f& size, const Vector2f& position) : size_(size), position_(position)
+am::Widget::Widget(const Vector2f& size, const Vector2f& position) : size_(size), position_(position)
 {}
 
-inline bool& Widget::isClicked(InputManager& input, Window& window) noexcept{
+inline bool& am::Widget::isClicked(InputManager& input, Window& window) noexcept{
 
     if(Collision::intersectMouse(*this, window) && input.click())
         clicked_ = true;
@@ -16,18 +16,18 @@ inline bool& Widget::isClicked(InputManager& input, Window& window) noexcept{
 
     return clicked_;
 }
-inline bool Widget::clicked() const noexcept{
+inline bool am::Widget::clicked() const noexcept{
 
     return clicked_;
 }
 
 
-bool& Widget::isMoved() noexcept{
+bool& am::Widget::isMoved() noexcept{
 
     return moved_;
 }
 
-void Widget::draw(sf::RenderTarget& target, sf::RenderStates states) const{
+void am::Widget::draw(sf::RenderTarget& target, sf::RenderStates states) const{
 
     target.draw(*this, states);
 }

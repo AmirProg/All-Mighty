@@ -1,17 +1,17 @@
 #include "phyEntity.hpp"
 
-PhyEntity::PhyEntity() : PhyEntity(Vector2f(0,0), 0)
+am::PhyEntity::PhyEntity() : PhyEntity(Vector2f(0,0), 0)
 {}
 
-PhyEntity::PhyEntity(const Vector2f& velocityVector, float mass) : velocityVector_(velocityVector), mass_(mass)
+am::PhyEntity::PhyEntity(const Vector2f& velocityVector, float mass) : velocityVector_(velocityVector), mass_(mass)
 {}
 
-void PhyEntity::setVelocityMax(const Vector2f& velocity){
+void am::PhyEntity::setVelocityMax(const Vector2f& velocity){
 
     velocityMax_ = velocity;
 }
 
-void PhyEntity::setVelocity(const Vector2f& velocityVector){
+void am::PhyEntity::setVelocity(const Vector2f& velocityVector){
 
     velocityVector_ = velocityVector;
 
@@ -21,22 +21,22 @@ void PhyEntity::setVelocity(const Vector2f& velocityVector){
         velocityVector_.y = velocityMax_.y;*/
 }
 
-void PhyEntity::setMass(float mass){
+void am::PhyEntity::setMass(float mass){
 
     mass_ = mass;
 }
 
-void PhyEntity::impulse(const Vector2f& impulseVector, float norm) {
+void am::PhyEntity::impulse(const Vector2f& impulseVector, float norm) {
 
     setVelocity(Vector2f(velocityVector_.x + impulseVector.x * norm / mass_, velocityVector_.y + impulseVector.y * norm / mass_));
 }
 
-Vector2f PhyEntity::getVelocity() const{
+am::Vector2f am::PhyEntity::getVelocity() const{
 
     return velocityVector_;
 }
 
-float PhyEntity::getMass() const{
+float am::PhyEntity::getMass() const{
 
     return mass_;
 }

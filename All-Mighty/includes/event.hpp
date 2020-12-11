@@ -13,14 +13,17 @@
 *
 ************************************************/
 
-class Event : public sf::Event, NonCopyable{
+namespace am {
 
-public:
-    Event();
-    virtual ~Event() = default;
-    inline bool isKeyboardEvent() const;
-    inline bool isMouseEvent() const;
-    bool close() const; // True if the window comes to be closed
-};
+    class Event : public sf::Event, NonCopyable {
+
+    public:
+        Event();
+        virtual ~Event() = default;
+        inline bool isKeyboardEvent() const;
+        inline bool isMouseEvent() const;
+        bool close() const; // True if the window comes to be closed
+    };
+}
 
 #endif // EVENT_HPP_INCLUDED

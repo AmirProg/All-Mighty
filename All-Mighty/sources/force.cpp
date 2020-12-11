@@ -1,6 +1,6 @@
 #include "force.hpp"
 #include <iostream>
-Force::Force(Type type) : type_(type), time_(StopWatch::Accuracy::Seconds) {
+am::Force::Force(Type type) : type_(type), time_(StopWatch::Accuracy::Seconds) {
 
     if (type_ == Type::Gravity) {
         norm_ = 9.81;
@@ -11,44 +11,44 @@ Force::Force(Type type) : type_(type), time_(StopWatch::Accuracy::Seconds) {
     update();
 }
 
-Force::Force(float norm, const Vector2f& dir) : norm_(norm), dir_(dir), time_(StopWatch::Accuracy::Seconds){
+am::Force::Force(float norm, const Vector2f& dir) : norm_(norm), dir_(dir), time_(StopWatch::Accuracy::Seconds){
 
     time_.start();
     update();
 }
 
-Force::~Force()
+am::Force::~Force()
 { entities_.clear(); }
 
-void Force::addEntity(ConcreteEntity& concreteEntity){
+void am::Force::addEntity(ConcreteEntity& concreteEntity){
 
     entities_.push_back(concreteEntity);
     update();
 }
 
-void Force::setNorm(float norm){
+void am::Force::setNorm(float norm){
 
     norm_ = norm;
     update();
 }
 
-void Force::setDirection(const Vector2f& dir){
+void am::Force::setDirection(const Vector2f& dir){
 
     dir_ = dir;
     update();
 }
 
-void Force::reset() {
+void am::Force::reset() {
       
     time_.restart();
 }
 
-Vector2f Force::getMoveVector() const{
+am::Vector2f am::Force::getMoveVector() const{
 
     return Vector2f(-norm_*dir_.x, -norm_*dir_.y);
 }
 
-void Force::apply(ConcreteEntity& entity){
+void am::Force::apply(ConcreteEntity& entity){
 
     float delta{ static_cast<float>(time_.getElapsedTime()) };
 
@@ -61,7 +61,7 @@ void Force::apply(ConcreteEntity& entity){
                                entity.first().getPosition().y - dir_.y * entity.second().getVelocity().y);
 }
 
-void Force::update(){
+void am::Force::update(){
 
     for(auto& i : entities_)
         apply(i.get());

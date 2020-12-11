@@ -1,38 +1,38 @@
 #include "gui.hpp"
 
-GUI::GUI(Style style, Window& window) : window_(window), style_(style)
+am::GUI::GUI(Style style, Window& window) : window_(window), style_(style)
 {}
 
-GUI::~GUI() {
+am::GUI::~GUI() {
 
     resources_.clear();
 }
 
-void GUI::add(const std::string& key, Widget& resource) {
+void am::GUI::add(const std::string& key, Widget& resource) {
 
     resources_.insert({ key, resource });
     update();
 }
 
-void GUI::remove(const std::string& key) {
+void am::GUI::remove(const std::string& key) {
 
     resources_.erase(key);
     update();
 }
 
-void GUI::setWindow(Window& window) {
+void am::GUI::setWindow(Window& window) {
 
     window_ = window;
     update();
 }
 
-void GUI::setStyle(Style style) {
+void am::GUI::setStyle(Style style) {
 
     style_ = style;
     update();
 }
 
-void GUI::update() {
+void am::GUI::update() {
 
     if (style_ == Style::Center)
         setCenterStyle(resources_, window_);
@@ -44,19 +44,19 @@ void GUI::update() {
         alignAxisX(window_.get().getSize().x / 2 - std::begin(resources_)->second.get().getSize().x / 2);
 }
 
-void GUI::draw(sf::RenderTarget& target, sf::RenderStates states) const {
+void am::GUI::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 
     for (const auto& i : resources_)
         target.draw(i.second, states);
 }
 
-void GUI::move(const Vector2f& moveVector) {
+void am::GUI::move(const Vector2f& moveVector) {
 
     for (auto& i : resources_)
         i.second.get().move(moveVector.x, moveVector.y);
 }
 
-void GUI::setCenterStyle(std::map<std::string, std::reference_wrapper<Widget>>& resources, std::reference_wrapper<Window> window) {
+void am::GUI::setCenterStyle(std::map<std::string, std::reference_wrapper<Widget>>& resources, std::reference_wrapper<Window> window) {
 
     auto currentWidget{ std::begin(resources)->second };
 
@@ -83,13 +83,13 @@ void GUI::setCenterStyle(std::map<std::string, std::reference_wrapper<Widget>>& 
     }
 }
 
-void GUI::getMovable(InputManager& input) {
+void am::GUI::getMovable(InputManager& input) {
 
     movable_ = true;
     moveWithMouse(input);
 }
 
-void GUI::moveWithMouse(InputManager& input) {
+void am::GUI::moveWithMouse(InputManager& input) {
 
     Vector2f posMouse{ InputManager::mousePosition(window_) };
 
@@ -109,7 +109,7 @@ void GUI::moveWithMouse(InputManager& input) {
     }
 }
 
-void GUI::alignAxisX(float x) {
+void am::GUI::alignAxisX(float x) {
 
     auto currentWidget{ std::begin(resources_)->second };
     auto positionX{ x };
